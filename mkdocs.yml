@@ -6,7 +6,7 @@ nav:
     - Ata 1: "atas-reuniao/ata-reuniao-1.md"
 
 theme:
-  logo: assets/LogoCelularSeguro.png
+  logo: assets/mudar.png
   font:
     text: Montserrat
   name: material
