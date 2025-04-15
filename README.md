@@ -6,13 +6,10 @@
 
 # Sobre
 
-Desenvolvimento de um interpretador de Python para C como parte da disciplina de Compiladores I, na Faculdade de Ciência, Tecnologia e Engenharia (FCTE) da Universidade de Brasília (UnB).
+Desenvolvimento de um interpretador de C desenvolvido em python como parte da disciplina de Compiladores I, na Faculdade de Ciência, Tecnologia e Engenharia (FCTE) da Universidade de Brasília (UnB).
 
 Utilizamos o repositório para compor nosso projeto final bem como as atividades realizadas na disciplina semanalmente.
-  
-# Documentação
 
-Link para a documentação do projeto: [MkDocs - Equipe "II"]("https://link aki") <br><br>
 
 <!--
 
