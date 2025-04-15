@@ -1,12 +1,32 @@
-site_name: Compiladores
+docs_dir: Docs
+repo_url: https://github.com/Requisitos-de-Software/2025.1-CelularSeguro
+repo_name: 2025.1-Celular Seguro
+
+site_name: Compiladores I
 
 nav:
-  - Instruções mkdocs: "index.md"
-  - Atas de Reunião:
-    - Ata 1: "atas-reuniao/ata-reuniao-1.md"
+  #- Landing Page: landing.html
+  - Home: index.md
+
+  - Planejamento: 
+      - Introdução: "documento-planejamento/documento-planejamento.md"
+      - HeatMap: "documento-planejamento/heatmap.md"
+      - Cronograma Planejado: "documento-planejamento/cronograma-planejado.md"
+      - Cronograma Executado: "documento-planejamento/cronograma-executado.md"
+      - Ferramentas: "documento-planejamento/ferramentas-utilizadas.md"
+      - Metodologia: "documento-planejamento/metodologias-utilizadas.md"
+
+  - Atividades Desenvolvidas em Aula: 
+      - Projeto Aula 1: "documento-aula/documento-aula1.md"    
+      - Projeto Aula 2: "documento-aula/documento-aula2.md" 
+      - Projeto Aula 3: "documento-aula/documento-aula3.md" 
+
+  - Entregas:
+    - Entrega 1: "entregas/entregas1.md" 
+  
 
 theme:
-  logo: assets/mudar.png
+  logo: assets/icone.png
   font:
     text: Montserrat
   name: material
@@ -20,20 +40,21 @@ theme:
     - navigation.tabs
     - navigation.top
     - navigation.tracking
+    - navigation.path
 
   palette:
     # Palette toggle for light mode
     - scheme: default
-      primary: amber
-      accent: amber
+      primary: black
+      accent: black
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
 
     # Palette toggle for dark mode
     - scheme: slate
-      primary: #2c2c7c
-      accent: amber
+      primary: black
+      accent: black
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
