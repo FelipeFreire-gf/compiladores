@@ -28,6 +28,9 @@ void yyerror(const char *s);
 %token ABRE_CHAVES FECHA_CHAVES
 %token PONTO_VIRGULA
 
+/* Tipos de retorno */
+%type <valor> condicao
+
 %%
 
 input:
@@ -50,7 +53,7 @@ comando_if:
 condicao:
     TRUE { $$ = 1; }
     | FALSE { $$ = 0; }
-    | PALAVRA { printf("Avaliando condição: %s\n", $1); free($1); }
+    | PALAVRA { printf("Avaliando condição: %s\n", $1); free($1); $$ = 1; }
 ;
 
 token:
