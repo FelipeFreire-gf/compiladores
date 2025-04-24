@@ -31,32 +31,45 @@ void yyerror(const char *s);
 /* Tipos de retorno */
 %type <valor> condicao
 
-/* Aceita um conflito de deslocamento/redução */
-%expect 1
+/* Precedência e associatividade */
+%right ELSE
 
 %%
 
 programa:
     /* vazio */
-    | programa linha
+    | programa declaracao
 ;
 
-linha:
-    comando
-    | comando PONTO_VIRGULA
+declaracao:
+    comando_composto
+    | comando_simples PONTO_VIRGULA
 ;
 
-comando:
+comando_composto:
     comando_if
-    | comando_print
-    | token_simples
-    | simbolo_simples
+    | bloco
+;
+
+bloco:
+    ABRE_CHAVES lista_comandos FECHA_CHAVES
+;
+
+lista_comandos:
+    /* vazio */
+    | lista_comandos comando_simples PONTO_VIRGULA
+;
+
+comando_simples:
+    comando_print
+    | expressao
+    | /* vazio */
 ;
 
 comando_if:
-    IF ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES comando FECHA_CHAVES
+    IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco
     { printf("Executando bloco if\n"); }
-    | IF ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES comando FECHA_CHAVES ELSE ABRE_CHAVES comando FECHA_CHAVES
+    | IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco ELSE bloco
     { printf("Executando bloco if-else\n"); }
 ;
 
@@ -65,18 +78,12 @@ comando_print:
     { printf("Imprimindo: %s\n", $3); free($3); }
 ;
 
-simbolo_simples:
-    ABRE_PARENTESES  { printf("Símbolo: (\n"); }
-    | FECHA_PARENTESES { printf("Símbolo: )\n"); }
-    | ABRE_CHAVES    { printf("Símbolo: {\n"); }
-    | FECHA_CHAVES   { printf("Símbolo: }\n"); }
-    | PONTO_VIRGULA  { printf("Símbolo: ;\n"); }
-;
-
-token_simples:
+expressao:
     NUMERO   { printf("Número: %s\n", $1); free($1); }
     | PALAVRA { printf("Palavra: %s\n", $1); free($1); }
     | SIMBOLO { printf("Símbolo: %s\n", $1); free($1); }
+    | TRUE { printf("Palavra reservada: true\n"); }
+    | FALSE { printf("Palavra reservada: false\n"); }
     | IF { printf("Palavra reservada: if\n"); }
     | ELSE { printf("Palavra reservada: else\n"); }
     | WHILE { printf("Palavra reservada: while\n"); }
@@ -89,13 +96,16 @@ token_simples:
     | FLOAT { printf("Palavra reservada: float\n"); }
     | CHAR { printf("Palavra reservada: char\n"); }
     | VOID { printf("Palavra reservada: void\n"); }
-    | TRUE { printf("Palavra reservada: true\n"); }
-    | FALSE { printf("Palavra reservada: false\n"); }
     | AND { printf("Palavra reservada: and\n"); }
     | OR { printf("Palavra reservada: or\n"); }
     | NOT { printf("Palavra reservada: not\n"); }
     | PRINT { printf("Palavra reservada: print\n"); }
     | SCAN { printf("Palavra reservada: scan\n"); }
+    | ABRE_PARENTESES  { printf("Símbolo: (\n"); }
+    | FECHA_PARENTESES { printf("Símbolo: )\n"); }
+    | ABRE_CHAVES     { printf("Símbolo: {\n"); }
+    | FECHA_CHAVES    { printf("Símbolo: }\n"); }
+    | PONTO_VIRGULA   { printf("Símbolo: ;\n"); }
 ;
 
 condicao:
