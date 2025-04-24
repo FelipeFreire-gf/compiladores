@@ -33,14 +33,15 @@ void yyerror(const char *s);
 
 %%
 
-input:
+programa:
     /* vazio */
-    | input comando
+    | programa comando
 ;
 
 comando:
     comando_if
-    | token
+    | comando_print
+    | token_simples
 ;
 
 comando_if:
@@ -50,13 +51,12 @@ comando_if:
     { printf("Executando bloco if-else\n"); }
 ;
 
-condicao:
-    TRUE { $$ = 1; }
-    | FALSE { $$ = 0; }
-    | PALAVRA { printf("Avaliando condição: %s\n", $1); free($1); $$ = 1; }
+comando_print:
+    PRINT ABRE_PARENTESES PALAVRA FECHA_PARENTESES PONTO_VIRGULA
+    { printf("Imprimindo: %s\n", $3); free($3); }
 ;
 
-token:
+token_simples:
     NUMERO   { printf("Número: %s\n", $1); free($1); }
     | PALAVRA { printf("Palavra: %s\n", $1); free($1); }
     | SIMBOLO { printf("Símbolo: %s\n", $1); free($1); }
@@ -79,6 +79,12 @@ token:
     | NOT { printf("Palavra reservada: not\n"); }
     | PRINT { printf("Palavra reservada: print\n"); }
     | SCAN { printf("Palavra reservada: scan\n"); }
+;
+
+condicao:
+    TRUE { $$ = 1; }
+    | FALSE { $$ = 0; }
+    | PALAVRA { printf("Avaliando condição: %s\n", $1); free($1); $$ = 1; }
 ;
 
 %%
