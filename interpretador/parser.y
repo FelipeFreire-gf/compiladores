@@ -32,82 +32,79 @@ void yyerror(const char *s);
 %type <valor> condicao
 
 /* Precedência e associatividade */
-%nonassoc IFX
+%nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
 
 %%
 
-input:
+programa: 
     /* vazio */
-    | input linha
+    | programa item
 ;
 
-linha:
-    token_simples
+item:
+    token
     | estrutura
-    | error '\n' { yyerrok; }
 ;
 
 estrutura:
-    comando_if
-    | comando_print PONTO_VIRGULA
+    if_stmt
+    | print_stmt
     | bloco
 ;
 
-bloco:
-    ABRE_CHAVES comandos FECHA_CHAVES
-;
-
-comandos:
-    /* vazio */
-    | comandos estrutura
-    | comandos token_simples
-;
-
-comando_if:
-    IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco %prec IFX
-    { printf("Executando bloco if\n"); }
+if_stmt:
+    IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco         %prec LOWER_THAN_ELSE
     | IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco ELSE bloco
-    { printf("Executando bloco if-else\n"); }
 ;
 
-comando_print:
-    PRINT ABRE_PARENTESES PALAVRA FECHA_PARENTESES
+print_stmt:
+    PRINT ABRE_PARENTESES PALAVRA FECHA_PARENTESES PONTO_VIRGULA
     { printf("Imprimindo: %s\n", $3); free($3); }
 ;
 
-token_simples:
-    NUMERO   { printf("Número: %s\n", $1); free($1); }
-    | PALAVRA { printf("Palavra: %s\n", $1); free($1); }
-    | SIMBOLO { printf("Símbolo: %s\n", $1); free($1); }
-    | IF { printf("Palavra reservada: if\n"); }
-    | ELSE { printf("Palavra reservada: else\n"); }
-    | WHILE { printf("Palavra reservada: while\n"); }
-    | FOR { printf("Palavra reservada: for\n"); }
-    | DO { printf("Palavra reservada: do\n"); }
-    | BREAK { printf("Palavra reservada: break\n"); }
-    | CONTINUE { printf("Palavra reservada: continue\n"); }
-    | RETURN { printf("Palavra reservada: return\n"); }
-    | INT { printf("Palavra reservada: int\n"); }
-    | FLOAT { printf("Palavra reservada: float\n"); }
-    | CHAR { printf("Palavra reservada: char\n"); }
-    | VOID { printf("Palavra reservada: void\n"); }
-    | TRUE { printf("Palavra reservada: true\n"); }
-    | FALSE { printf("Palavra reservada: false\n"); }
-    | AND { printf("Palavra reservada: and\n"); }
-    | OR { printf("Palavra reservada: or\n"); }
-    | NOT { printf("Palavra reservada: not\n"); }
-    | PRINT { printf("Palavra reservada: print\n"); }
-    | SCAN { printf("Palavra reservada: scan\n"); }
-    | ABRE_PARENTESES { printf("Símbolo: (\n"); }
+bloco:
+    ABRE_CHAVES lista_comandos FECHA_CHAVES
+;
+
+lista_comandos:
+    /* vazio */
+    | lista_comandos estrutura
+    | lista_comandos token PONTO_VIRGULA
+;
+
+token:
+    NUMERO              { printf("Número: %s\n", $1); free($1); }
+    | PALAVRA           { printf("Palavra: %s\n", $1); free($1); }
+    | SIMBOLO           { printf("Símbolo: %s\n", $1); free($1); }
+    | IF               { printf("Palavra reservada: if\n"); }
+    | ELSE             { printf("Palavra reservada: else\n"); }
+    | WHILE            { printf("Palavra reservada: while\n"); }
+    | FOR              { printf("Palavra reservada: for\n"); }
+    | DO               { printf("Palavra reservada: do\n"); }
+    | BREAK            { printf("Palavra reservada: break\n"); }
+    | CONTINUE         { printf("Palavra reservada: continue\n"); }
+    | RETURN           { printf("Palavra reservada: return\n"); }
+    | INT              { printf("Palavra reservada: int\n"); }
+    | FLOAT            { printf("Palavra reservada: float\n"); }
+    | CHAR             { printf("Palavra reservada: char\n"); }
+    | VOID             { printf("Palavra reservada: void\n"); }
+    | TRUE             { printf("Palavra reservada: true\n"); }
+    | FALSE            { printf("Palavra reservada: false\n"); }
+    | AND              { printf("Palavra reservada: and\n"); }
+    | OR               { printf("Palavra reservada: or\n"); }
+    | NOT              { printf("Palavra reservada: not\n"); }
+    | PRINT            { printf("Palavra reservada: print\n"); }
+    | SCAN             { printf("Palavra reservada: scan\n"); }
+    | ABRE_PARENTESES  { printf("Símbolo: (\n"); }
     | FECHA_PARENTESES { printf("Símbolo: )\n"); }
-    | ABRE_CHAVES { printf("Símbolo: {\n"); }
-    | FECHA_CHAVES { printf("Símbolo: }\n"); }
-    | PONTO_VIRGULA { printf("Símbolo: ;\n"); }
+    | ABRE_CHAVES     { printf("Símbolo: {\n"); }
+    | FECHA_CHAVES    { printf("Símbolo: }\n"); }
+    | PONTO_VIRGULA   { printf("Símbolo: ;\n"); }
 ;
 
 condicao:
-    TRUE { $$ = 1; }
+    TRUE    { $$ = 1; }
     | FALSE { $$ = 0; }
     | PALAVRA { printf("Avaliando condição: %s\n", $1); free($1); $$ = 1; }
 ;
