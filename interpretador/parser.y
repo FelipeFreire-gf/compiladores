@@ -34,21 +34,29 @@ void yyerror(const char *s);
 %%
 
 programa:
+    lista_comandos
+;
+
+lista_comandos:
     /* vazio */
-    | programa comando
+    | lista_comandos comando
 ;
 
 comando:
     comando_if
     | comando_print
-    | token_simples
+    | token_simples PONTO_VIRGULA
 ;
 
 comando_if:
-    IF ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES comando FECHA_CHAVES
+    IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco
     { printf("Executando bloco if\n"); }
-    | IF ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES comando FECHA_CHAVES ELSE ABRE_CHAVES comando FECHA_CHAVES
+    | IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco ELSE bloco
     { printf("Executando bloco if-else\n"); }
+;
+
+bloco:
+    ABRE_CHAVES lista_comandos FECHA_CHAVES
 ;
 
 comando_print:
