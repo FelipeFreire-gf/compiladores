@@ -32,7 +32,8 @@ void yyerror(const char *s);
 %type <valor> condicao
 
 /* Precedência e associatividade */
-%right ELSE
+%nonassoc IFX
+%nonassoc ELSE
 
 %%
 
@@ -42,34 +43,30 @@ programa:
 ;
 
 declaracao:
-    comando_composto
-    | comando_simples PONTO_VIRGULA
+    stmt PONTO_VIRGULA
+    | stmt_composto
 ;
 
-comando_composto:
-    comando_if
-    | bloco
-;
-
-bloco:
-    ABRE_CHAVES lista_comandos FECHA_CHAVES
-;
-
-lista_comandos:
+stmt:
     /* vazio */
-    | lista_comandos comando_simples PONTO_VIRGULA
+    | expressao
+    | comando_print
 ;
 
-comando_simples:
-    comando_print
-    | expressao
-    | /* vazio */
+stmt_composto:
+    ABRE_CHAVES lista_stmt FECHA_CHAVES
+    | comando_if
+;
+
+lista_stmt:
+    /* vazio */
+    | lista_stmt declaracao
 ;
 
 comando_if:
-    IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco
+    IF ABRE_PARENTESES condicao FECHA_PARENTESES stmt_composto %prec IFX
     { printf("Executando bloco if\n"); }
-    | IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco ELSE bloco
+    | IF ABRE_PARENTESES condicao FECHA_PARENTESES stmt_composto ELSE stmt_composto
     { printf("Executando bloco if-else\n"); }
 ;
 
@@ -101,11 +98,6 @@ expressao:
     | NOT { printf("Palavra reservada: not\n"); }
     | PRINT { printf("Palavra reservada: print\n"); }
     | SCAN { printf("Palavra reservada: scan\n"); }
-    | ABRE_PARENTESES  { printf("Símbolo: (\n"); }
-    | FECHA_PARENTESES { printf("Símbolo: )\n"); }
-    | ABRE_CHAVES     { printf("Símbolo: {\n"); }
-    | FECHA_CHAVES    { printf("Símbolo: }\n"); }
-    | PONTO_VIRGULA   { printf("Símbolo: ;\n"); }
 ;
 
 condicao:
