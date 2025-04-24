@@ -8,6 +8,26 @@ SIMBOLO   [!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|~`´¨ªº°§¬¢£¥€©®™±�
 
 %%
 
+"if"       { return IF; }
+"else"     { return ELSE; }
+"while"    { return WHILE; }
+"for"      { return FOR; }
+"do"       { return DO; }
+"break"    { return BREAK; }
+"continue" { return CONTINUE; }
+"return"   { return RETURN; }
+"int"      { return INT; }
+"float"    { return FLOAT; }
+"char"     { return CHAR; }
+"void"     { return VOID; }
+"true"     { return TRUE; }
+"false"    { return FALSE; }
+"and"      { return AND; }
+"or"       { return OR; }
+"not"      { return NOT; }
+"print"    { return PRINT; }
+"scan"     { return SCAN; }
+
 {DIGITO}+               { yylval.str = strdup(yytext); return NUMERO; }
 {DIGITO}+"."{DIGITO}+   { yylval.str = strdup(yytext); return NUMERO; }
 {LETRA}+                { yylval.str = strdup(yytext); return PALAVRA; }
@@ -17,7 +37,3 @@ SIMBOLO   [!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|~`´¨ªº°§¬¢£¥€©®™±�
 
 %%
 
-// Função auxiliar para relatar erros léxicos
-void yyerror(const char *s) {
-    fprintf(stderr, "Erro léxico: %s\n", s);
-}
