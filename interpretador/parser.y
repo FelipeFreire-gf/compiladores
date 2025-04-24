@@ -37,14 +37,20 @@ void yyerror(const char *s);
 %%
 
 programa:
+    /* vazio */
+    | programa linha
+;
+
+linha:
     comando
-    | programa comando
+    | comando PONTO_VIRGULA
 ;
 
 comando:
     comando_if
     | comando_print
     | token_simples
+    | simbolo_simples
 ;
 
 comando_if:
@@ -57,6 +63,14 @@ comando_if:
 comando_print:
     PRINT ABRE_PARENTESES PALAVRA FECHA_PARENTESES
     { printf("Imprimindo: %s\n", $3); free($3); }
+;
+
+simbolo_simples:
+    ABRE_PARENTESES  { printf("Símbolo: (\n"); }
+    | FECHA_PARENTESES { printf("Símbolo: )\n"); }
+    | ABRE_CHAVES    { printf("Símbolo: {\n"); }
+    | FECHA_CHAVES   { printf("Símbolo: }\n"); }
+    | PONTO_VIRGULA  { printf("Símbolo: ;\n"); }
 ;
 
 token_simples:

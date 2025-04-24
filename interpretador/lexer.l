@@ -4,6 +4,7 @@
 
 DIGITO    [0-9]
 LETRA     [a-zA-Z]
+ID        [a-zA-Z][a-zA-Z0-9_]*
 SIMBOLO   [!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|~`´¨ªº°§¬¢£¥€©®™±×÷√∞µ∑∏∂∫∆∇∮∯∰∱∲∳∴∵∶∷≅≈≠≡≤≥≪≫≬≭≮≯≰≱≲≳≴≵≶≷≸≹≺≻≼≽≾≿⊀⊁⊂⊃⊄⊅⊆⊇⊈⊉⊊⊋⊌⊍⊎⊏⊐⊑⊒⊓⊔⊕⊖⊗⊘⊙⊚⊛⊜⊝⊞⊟⊠⊡⊢⊣⊤⊥⊦⊧⊨⊩⊪⊫⊬⊭⊮⊯⊰⊱⊲⊳⊴⊵⊶⊷⊸⊹⊺⊻⊼⊽⊾⊿⋀⋁⋂⋃⋄⋅⋆⋇⋈⋉⋊⋋⋌⋍⋎⋏⋐⋑⋒⋓⋔⋕⋖⋗⋘⋙⋚⋛⋜⋝⋞⋟⋠⋡⋢⋣⋤⋥⋦⋧⋨⋩⋪⋫⋬⋭⋮⋯⋰⋱⋲⋳⋴⋵⋶⋷⋸⋹⋺⋻⋼⋽⋾⋿]
 
 %%
@@ -36,8 +37,8 @@ SIMBOLO   [!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|~`´¨ªº°§¬¢£¥€©®™±�
 
 {DIGITO}+               { yylval.str = strdup(yytext); return NUMERO; }
 {DIGITO}+"."{DIGITO}+   { yylval.str = strdup(yytext); return NUMERO; }
-{LETRA}+                { yylval.str = strdup(yytext); return PALAVRA; }
-{SIMBOLO}+             { yylval.str = strdup(yytext); return SIMBOLO; }
+{ID}                    { yylval.str = strdup(yytext); return PALAVRA; }
+{SIMBOLO}               { yylval.str = strdup(yytext); return SIMBOLO; }
 [ \t\n]                 ;  // Ignora espaços, tabs e novas linhas
 .                       { printf("Caractere desconhecido: %s\n", yytext); }
 
