@@ -31,6 +31,9 @@ void yyerror(const char *s);
 /* Tipos de retorno */
 %type <valor> condicao
 
+/* Aceita um conflito de deslocamento/redução */
+%expect 1
+
 %%
 
 programa:
