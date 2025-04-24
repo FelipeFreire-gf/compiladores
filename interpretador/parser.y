@@ -34,33 +34,25 @@ void yyerror(const char *s);
 %%
 
 programa:
-    lista_comandos
-;
-
-lista_comandos:
-    /* vazio */
-    | lista_comandos comando
+    comando
+    | programa comando
 ;
 
 comando:
     comando_if
     | comando_print
-    | token_simples PONTO_VIRGULA
+    | token_simples
 ;
 
 comando_if:
-    IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco
+    IF ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES comando FECHA_CHAVES
     { printf("Executando bloco if\n"); }
-    | IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco ELSE bloco
+    | IF ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES comando FECHA_CHAVES ELSE ABRE_CHAVES comando FECHA_CHAVES
     { printf("Executando bloco if-else\n"); }
 ;
 
-bloco:
-    ABRE_CHAVES lista_comandos FECHA_CHAVES
-;
-
 comando_print:
-    PRINT ABRE_PARENTESES PALAVRA FECHA_PARENTESES PONTO_VIRGULA
+    PRINT ABRE_PARENTESES PALAVRA FECHA_PARENTESES
     { printf("Imprimindo: %s\n", $3); free($3); }
 ;
 
