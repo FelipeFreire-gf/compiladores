@@ -32,19 +32,22 @@ void yyerror(const char *s);
 %type <valor> condicao
 
 /* Precedência e associatividade */
-%nonassoc LOWER_THAN_ELSE
-%nonassoc ELSE
+%right ELSE
 
 %%
 
 programa: 
     /* vazio */
-    | programa item
+    | programa linha
 ;
 
-item:
-    token
+linha:
+    token_linha
     | estrutura
+;
+
+token_linha:
+    token PONTO_VIRGULA
 ;
 
 estrutura:
@@ -54,7 +57,7 @@ estrutura:
 ;
 
 if_stmt:
-    IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco         %prec LOWER_THAN_ELSE
+    IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco
     | IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco ELSE bloco
 ;
 
@@ -64,13 +67,12 @@ print_stmt:
 ;
 
 bloco:
-    ABRE_CHAVES lista_comandos FECHA_CHAVES
+    ABRE_CHAVES conteudo_bloco FECHA_CHAVES
 ;
 
-lista_comandos:
+conteudo_bloco:
     /* vazio */
-    | lista_comandos estrutura
-    | lista_comandos token PONTO_VIRGULA
+    | conteudo_bloco linha
 ;
 
 token:
@@ -96,11 +98,6 @@ token:
     | NOT              { printf("Palavra reservada: not\n"); }
     | PRINT            { printf("Palavra reservada: print\n"); }
     | SCAN             { printf("Palavra reservada: scan\n"); }
-    | ABRE_PARENTESES  { printf("Símbolo: (\n"); }
-    | FECHA_PARENTESES { printf("Símbolo: )\n"); }
-    | ABRE_CHAVES     { printf("Símbolo: {\n"); }
-    | FECHA_CHAVES    { printf("Símbolo: }\n"); }
-    | PONTO_VIRGULA   { printf("Símbolo: ;\n"); }
 ;
 
 condicao:
