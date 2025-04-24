@@ -37,42 +37,37 @@ void yyerror(const char *s);
 
 %%
 
-programa:
+input:
     /* vazio */
-    | programa linha
+    | input linha
 ;
 
 linha:
-    declaracao
-    | token_simples
+    token_simples
+    | estrutura
     | error '\n' { yyerrok; }
 ;
 
-declaracao:
-    stmt PONTO_VIRGULA
-    | stmt_composto
+estrutura:
+    comando_if
+    | comando_print PONTO_VIRGULA
+    | bloco
 ;
 
-stmt:
+bloco:
+    ABRE_CHAVES comandos FECHA_CHAVES
+;
+
+comandos:
     /* vazio */
-    | expressao
-    | comando_print
-;
-
-stmt_composto:
-    ABRE_CHAVES lista_stmt FECHA_CHAVES
-    | comando_if
-;
-
-lista_stmt:
-    /* vazio */
-    | lista_stmt declaracao
+    | comandos estrutura
+    | comandos token_simples
 ;
 
 comando_if:
-    IF ABRE_PARENTESES condicao FECHA_PARENTESES stmt_composto %prec IFX
+    IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco %prec IFX
     { printf("Executando bloco if\n"); }
-    | IF ABRE_PARENTESES condicao FECHA_PARENTESES stmt_composto ELSE stmt_composto
+    | IF ABRE_PARENTESES condicao FECHA_PARENTESES bloco ELSE bloco
     { printf("Executando bloco if-else\n"); }
 ;
 
@@ -109,10 +104,6 @@ token_simples:
     | ABRE_CHAVES { printf("Símbolo: {\n"); }
     | FECHA_CHAVES { printf("Símbolo: }\n"); }
     | PONTO_VIRGULA { printf("Símbolo: ;\n"); }
-;
-
-expressao:
-    token_simples
 ;
 
 condicao:
