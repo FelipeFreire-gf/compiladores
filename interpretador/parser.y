@@ -39,7 +39,13 @@ void yyerror(const char *s);
 
 programa:
     /* vazio */
-    | programa declaracao
+    | programa linha
+;
+
+linha:
+    declaracao
+    | token_simples
+    | error '\n' { yyerrok; }
 ;
 
 declaracao:
@@ -75,12 +81,10 @@ comando_print:
     { printf("Imprimindo: %s\n", $3); free($3); }
 ;
 
-expressao:
+token_simples:
     NUMERO   { printf("Número: %s\n", $1); free($1); }
     | PALAVRA { printf("Palavra: %s\n", $1); free($1); }
     | SIMBOLO { printf("Símbolo: %s\n", $1); free($1); }
-    | TRUE { printf("Palavra reservada: true\n"); }
-    | FALSE { printf("Palavra reservada: false\n"); }
     | IF { printf("Palavra reservada: if\n"); }
     | ELSE { printf("Palavra reservada: else\n"); }
     | WHILE { printf("Palavra reservada: while\n"); }
@@ -93,11 +97,22 @@ expressao:
     | FLOAT { printf("Palavra reservada: float\n"); }
     | CHAR { printf("Palavra reservada: char\n"); }
     | VOID { printf("Palavra reservada: void\n"); }
+    | TRUE { printf("Palavra reservada: true\n"); }
+    | FALSE { printf("Palavra reservada: false\n"); }
     | AND { printf("Palavra reservada: and\n"); }
     | OR { printf("Palavra reservada: or\n"); }
     | NOT { printf("Palavra reservada: not\n"); }
     | PRINT { printf("Palavra reservada: print\n"); }
     | SCAN { printf("Palavra reservada: scan\n"); }
+    | ABRE_PARENTESES { printf("Símbolo: (\n"); }
+    | FECHA_PARENTESES { printf("Símbolo: )\n"); }
+    | ABRE_CHAVES { printf("Símbolo: {\n"); }
+    | FECHA_CHAVES { printf("Símbolo: }\n"); }
+    | PONTO_VIRGULA { printf("Símbolo: ;\n"); }
+;
+
+expressao:
+    token_simples
 ;
 
 condicao:
