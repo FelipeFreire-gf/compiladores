@@ -11,22 +11,46 @@ void yyerror(const char *s);
 
 %union {
     char *str;
+    int valor;
 }
 
 %token <str> NUMERO PALAVRA SIMBOLO
+%token <valor> TRUE FALSE
 
 /* Palavras reservadas */
 %token IF ELSE WHILE FOR DO BREAK CONTINUE RETURN
 %token INT FLOAT CHAR VOID
-%token TRUE FALSE
 %token AND OR NOT
 %token PRINT SCAN
+
+/* Símbolos especiais */
+%token ABRE_PARENTESES FECHA_PARENTESES
+%token ABRE_CHAVES FECHA_CHAVES
+%token PONTO_VIRGULA
 
 %%
 
 input:
     /* vazio */
-    | input token
+    | input comando
+;
+
+comando:
+    comando_if
+    | token
+;
+
+comando_if:
+    IF ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES comando FECHA_CHAVES
+    { printf("Executando bloco if\n"); }
+    | IF ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES comando FECHA_CHAVES ELSE ABRE_CHAVES comando FECHA_CHAVES
+    { printf("Executando bloco if-else\n"); }
+;
+
+condicao:
+    TRUE { $$ = 1; }
+    | FALSE { $$ = 0; }
+    | PALAVRA { printf("Avaliando condição: %s\n", $1); free($1); }
 ;
 
 token:

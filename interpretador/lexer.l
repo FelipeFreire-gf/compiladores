@@ -28,6 +28,12 @@ SIMBOLO   [!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|~`´¨ªº°§¬¢£¥€©®™±�
 "print"    { return PRINT; }
 "scan"     { return SCAN; }
 
+"("        { return ABRE_PARENTESES; }
+")"        { return FECHA_PARENTESES; }
+"{"        { return ABRE_CHAVES; }
+"}"        { return FECHA_CHAVES; }
+";"        { return PONTO_VIRGULA; }
+
 {DIGITO}+               { yylval.str = strdup(yytext); return NUMERO; }
 {DIGITO}+"."{DIGITO}+   { yylval.str = strdup(yytext); return NUMERO; }
 {LETRA}+                { yylval.str = strdup(yytext); return PALAVRA; }
