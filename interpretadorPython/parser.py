@@ -2,14 +2,19 @@ import ply.yacc as yacc
 from lexer import tokens
 
 precedence = (
+    ('left', 'AND', 'OR'),
     ('left', 'LT', 'LE', 'GT', 'GE', 'EQ', 'NE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
 )
 
 def p_program(p):
-    '''program : function'''
-    p[0] = p[1]
+    '''program : function
+              | expression SEMI'''
+    if len(p) == 2:
+        p[0] = ('program', p[1])
+    else:
+        p[0] = ('program', ('expression_stmt', p[1]))
 
 def p_function(p):
     '''function : type ID LPAREN RPAREN LBRACE statement_list RBRACE'''
@@ -32,8 +37,12 @@ def p_statement(p):
                 | assignment
                 | if_statement
                 | while_statement
-                | return_statement'''
-    p[0] = p[1]
+                | return_statement
+                | expression SEMI'''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = ('expression_stmt', p[1])
 
 def p_declaration(p):
     '''declaration : type ID SEMI
@@ -66,6 +75,11 @@ def p_return_statement(p):
     'return_statement : RETURN expression SEMI'
     p[0] = ('return', p[2])
 
+def p_expression_logical(p):
+    '''expression : expression AND expression
+                 | expression OR expression'''
+    p[0] = ('logical', p[2], p[1], p[3])
+
 def p_expression_binop(p):
     '''expression : expression PLUS expression
                  | expression MINUS expression
@@ -82,6 +96,11 @@ def p_expression_binop(p):
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
     p[0] = p[2]
+
+def p_expression_bool(p):
+    '''expression : TRUE
+                 | FALSE'''
+    p[0] = ('bool', p[1] == 'true')
 
 def p_expression_number(p):
     'expression : NUMBER'

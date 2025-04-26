@@ -5,14 +5,16 @@ reserved = {
     'return': 'RETURN',
     'if': 'IF',
     'else': 'ELSE',
-    'while': 'WHILE'
+    'while': 'WHILE',
+    'true': 'TRUE',
+    'false': 'FALSE'
 }
 
 tokens = [
     'ID', 'NUMBER',
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
     'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',
-    'ASSIGN',
+    'ASSIGN', 'AND', 'OR',
     'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
     'SEMI'
 ] + list(reserved.values())
@@ -28,6 +30,8 @@ t_GE = r'>='
 t_EQ = r'=='
 t_NE = r'!='
 t_ASSIGN = r'='
+t_AND = r'&&'
+t_OR = r'\|\|'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LBRACE = r'\{'
@@ -43,6 +47,15 @@ def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)
     return t
+
+def t_COMMENT(t):
+    r'//.*'
+    pass
+
+def t_BLOCK_COMMENT(t):
+    r'/\*(.|\n)*?\*/'
+    t.lexer.lineno += t.value.count('\n')
+    pass
 
 t_ignore = ' \t'
 

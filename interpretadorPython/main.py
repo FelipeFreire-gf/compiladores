@@ -4,7 +4,6 @@ from parser import parser
 from interpreter import Interpreter
 
 def format_ast(node, indent=0):
-    """Formats the AST in a clean, minimalist, and presentation-ready tree structure."""
     indent_str = "  " * indent
     if not isinstance(node, tuple):
         return f"{indent_str}└─ {node}\n"
@@ -12,7 +11,11 @@ def format_ast(node, indent=0):
     result = ""
     node_type = node[0]
 
-    if node_type == 'function':
+    if node_type == 'program':
+        result += f"{indent_str}└─ Program\n"
+        result += format_ast(node[1], indent + 1)
+
+    elif node_type == 'function':
         result += f"{indent_str}└─ Function: {node[2]} ({node[1]})\n"
         result += f"{indent_str}  └─ Body\n"
         for stmt in node[3]:
@@ -58,6 +61,17 @@ def format_ast(node, indent=0):
             result += f"{indent_str}  └─ Value\n"
             result += format_ast(node[1], indent + 2)
 
+    elif node_type == 'expression_stmt':
+        result += f"{indent_str}└─ Expression\n"
+        result += format_ast(node[1], indent + 2)
+
+    elif node_type == 'logical':
+        result += f"{indent_str}└─ Logical: {node[1]}\n"
+        result += f"{indent_str}  └─ Left\n"
+        result += format_ast(node[2], indent + 2)
+        result += f"{indent_str}  └─ Right\n"
+        result += format_ast(node[3], indent + 2)
+
     elif node_type == 'binop':
         result += f"{indent_str}└─ Op: {node[1]}\n"
         result += f"{indent_str}  └─ Left\n"
@@ -68,6 +82,9 @@ def format_ast(node, indent=0):
     elif node_type == 'number':
         result += f"{indent_str}└─ Num: {node[1]}\n"
 
+    elif node_type == 'bool':
+        result += f"{indent_str}└─ Bool: {node[1]}\n"
+
     elif node_type == 'id':
         result += f"{indent_str}└─ Var: {node[1]}\n"
 
@@ -76,6 +93,7 @@ def format_ast(node, indent=0):
 def analisar_parametros(codigo):
     # Tokenização
     print("Tokens:")
+    lexer.input(codigo)
     for tok in lexer:
         print(f"  {tok.type}: {tok.value}")
 
@@ -92,7 +110,7 @@ def analisar_parametros(codigo):
     interpreter = Interpreter()
     result = interpreter.interpret(resultado)
     
-    print("Resultado:", result)
+    print("\nResultado:", result)
     print("Variáveis finais:", interpreter.env)
     
     return resultado
@@ -105,5 +123,4 @@ if __name__ == "__main__":
     arquivo = sys.argv[1]
     with open(arquivo, 'r') as f:
         conteudo = f.read()
-        lexer.input(conteudo)  # Initialize lexer with the code
         analisar_parametros(conteudo)
