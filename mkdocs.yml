@@ -14,11 +14,11 @@ nav:
       - Cronograma Executado: "documento-planejamento/cronograma-executado.md"
       - Ferramentas: "documento-planejamento/ferramentas-utilizadas.md"
       - Metodologia: "documento-planejamento/metodologias-utilizadas.md"
-      - Atas: "atas-reuniao"
-        - Ata Reunião 1: "ata-reuniao-1.md"
-        - Ata Reunião 2: "ata-reuniao-2.md"
-        - Ata Reunião 3: "ata-reuniao-3.md"
-        - Ata Reunião 4: "ata-reuniao-4.md"
+      - Atas:
+        - Ata Reunião 1: "atas-reuniao/ata-reuniao-1.md"
+        - Ata Reunião 2: "atas-reuniao/ata-reuniao-2.md"
+        - Ata Reunião 3: "atas-reuniao/ata-reuniao-3.md"
+        - Ata Reunião 4: "atas-reuniao/ata-reuniao-4.md"
 
   - Atividades Desenvolvidas em Aula: 
       - Projeto Aula 1: "documento-aula/documento-aula1.md"    
