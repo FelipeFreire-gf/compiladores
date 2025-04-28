@@ -113,5 +113,5 @@ ABNT NBR 6022:2018 — Informação e documentação – Artigo em publicação 
 
 | Versão | Data | Descrição | Autor(es) | Revisor(es) |
 |--------|------|-----------|-----------|-------------|
-| 1.0    | 15/04/2025 | Criação do documento. | <a style="color:gold;" href="https://github.com/FelipeFreire-gf" target="_blank">Felipe</a> | <a style="color:gold;" href="https://github.com/brenoalexandre0" target="_blank">Breno</a> |
-| 1.1    | 27/04/2025 | Adição do planejamento geral. | <a style="color:gold;" href="https://github.com/brenoalexandre0" target="_blank">Breno</a> |  |
+| 1.0    | 15/04/2025 | Criação do documento. | <a style="color:SteelBlue;" href="https://github.com/FelipeFreire-gf" target="_blank">Felipe</a> | <a style="color:SteelBlue;" href="https://github.com/brenoalexandre0" target="_blank">Breno</a> |
+| 1.1    | 27/04/2025 | Adição do planejamento geral. | <a style="color:SteelBlue;" href="https://github.com/brenoalexandre0" target="_blank">Breno</a> |  |
