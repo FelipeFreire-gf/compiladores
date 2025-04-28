@@ -8,44 +8,48 @@ O cronograma Executado será atualizado ao fim de cada etapa.
 
 ---
 
-
-## Etapa 1 – Planejamento e Pré-Rastreabilidade  
-- Período: 26/03 a 13/04  
-- Entrega: 13/04  
-- Apresentação: 15/04  
+## Ponto de Controle 1 – Planejamento e implementação inicial do _lexer_ e do _parser_
+- Período: 26/03 a 28/04
+- Entrega: 28/04
+- Apresentação: 30/04
 
 ### Duplas responsáveis pelas atas
-- Semana 1 (24/03 a 30/03): *Felipe e Leonardo*
-- Semana 2 (31/03 a 06/04): *Arthur e Gabriel*
-- Semana 3 (07/04 a 13/04): *Mateus e Vitor*
+- Semana 1 (26/03 a 01/04): *Kaleb*
+- Semana 2 (02/04 a 08/04): *Kaleb*
+- Semana 3 (09/04 a 15/04): *Kaleb*
+- Semana 4 (16/04 a 22/04): 
+- Semana 5 (23/04 a 28/04): *Kaleb*
 
 ### Tarefas
 
-<font size="3"><p style="text-align: center">Tabela 1: Atividades realizadas na etapa 1</p></font>
+<font size="3"><p style="text-align: center">Tabela 1: Atividades planejadas para a P1.</p></font>
 
 | Tarefa                                      |      Responsáveis      |      Revisor(es)   |  Início |  Fim  |
 |---------------------------------------------|------------------------|--------------------|---------| ----- |
-| Analisar e escolher aplicativo              | Leonardo e Mateus      | Arthur e Vitor     |  26/03  | 31/03 |
-| Elaboração do cronograma planejado          | Arthur e Vitor         | Leonardo e Mateus  |  02/04  | 12/04 |          
-| Escolha de Metodologia e Ferramentas        | Arthur e Vitor         | Leonardo e Mateus  |  02/04  | 10/04 |
-| Documentar Equipe e criar Homepage          | Felipe                 | Gabriel e Daniel   |  03/04  | 11/04 |
-| Criação dos Richs Pictures                  | Leonardo e Mateus      | Arthur e Felipe    |  03/04  | 07/04 |
-| Gravar e fazer upload da apresentação       | Daniel e Gabriel       | Leonardo e Mateus  |  13/04  | 13/04 |
-| *Revisão final*                             | Todos                  |                    |  13/04  | 13/04 |
+| Escolha de linguagens e de compilador       | Todos                  | Todos              |  26/03  | 02/04 |
+| Elaboração do cronograma planejado          | Breno                  |                    |  27/04  | 28/04 |   
+| Implementação do lexer                      | Júlio e Othavio        | Felipe e Lucas     |  24/04  | 24/04 |
+| Implementação do parser                     | Felipe e Lucas         | Júlio e Othavio    |  24/04  | 24/04 |
+| *Revisão final*                             | Todos                  | Todos              |  28/04  | 28/04 |
 
-<font size="3"><p style="text-align: center">Fonte: Autores</p></font>
+<font size="3"><p style="text-align: center">Fonte: Autores.</p></font>
 
+---
 
 ## Referência Bibliográfica
 
-SALES, André Barros de. *Ambientação - Aula 1, Exemplo de Cronograma*. Aprender 3. Distrito Federal, 2025. Disponível em: <https://aprender3.unb.br/mod/resource/view.php?id=1390833>. Acesso em: 09 abr. 2025.
+SALES, André Barros de. *Ambientação - Aula 1, Exemplo de Cronograma*. Aprender 3. Distrito Federal, 2025. Disponível em: <https://aprender3.unb.br/mod/resource/view.php?id=1390833>. Acesso em: 15 abr. 2025.
+
+Cronograma BilheteriaDigital. Disponível em: <https://requisitos-de-software.github.io/2023.1-BilheteriaDigital/planejamento/cronograma/> . Acesso em 15 de abril de 2025.
 
 ABNT NBR 6022:2018 — Informação e documentação – Artigo em publicação periódica científica impressa – Apresentação.
 
 ---
+
 ## Histórico de Versões
 
 
-| Versão | Data       | Descrição                                     | Autor(es)                                                             | Revisor(es)                                                          |
-|--------|------------|-----------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------------|
-| 1.0    | 09/04/2025 | Criação do documento                         | <a href="https://github.com/arthurlleite" target="_blank">Arthur</a>, <a href="https://github.com/Bessazs" target="_blank">Vitor</a> | <a href="https://github.com/leozinlima" target="_blank">Leonardo</a>           |
+| Versão | Data | Descrição | Autor(es) | Revisor(es) |
+|--------|------|-----------|-----------|-------------|
+| 1.0    | 15/04/2025 | Criação do documento. | <a style="color:gold;" href="https://github.com/FelipeFreire-gf" target="_blank">Felipe</a> | <a style="color:gold;" href="https://github.com/brenoalexandre0" target="_blank">Breno</a> |
+| 1.1    | 27/04/2025 | Adição da execução da P1. | <a style="color:gold;" href="https://github.com/brenoalexandre0" target="_blank">Breno</a> |  |
