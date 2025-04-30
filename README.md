@@ -10,6 +10,34 @@ Desenvolvimento de um interpretador de C desenvolvido em python como parte da di
 
 Utilizamos o repositório para compor nosso projeto final bem como as atividades realizadas na disciplina semanalmente.
 
+## Visão Geral
+
+Este projeto implementa um interpretador para um subconjunto da linguagem C, com os seguintes recursos:
+
+- **Linguagem de entrada**: Código C com suporte a `int`, `if`, `else`, `while` , `return`, expressões aritméticas e booleanas.
+- **Backend**: Python 3 com a biblioteca [PLY (Python Lex-Yacc)](http://www.dabeaz.com/ply/).
+- **Pipeline completo**: Análise léxica, análise sintática (AST) e interpretação.
+- **Objetivo**: Compreensão prática de compiladores e linguagens formais.
+
+## Instalação e Execução
+
+### Requisitos
+
+- Navegue até a pasta interpretadorPython
+- Python 3.8 ou superior
+- PLY 
+
+### Instalando dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+### Para Rodar o Projeto
+
+```bash
+python main.py testes.c
+```
 
 <!--
 
