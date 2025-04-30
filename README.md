@@ -1,12 +1,12 @@
-# Documentação Compiladores I - Equipe II
+# Compiladores I - Equipe II: CobraCai
 
 <p align="center">
-  <img src="./docs/assets/logoComp2.png" height='300px' style={{ display: 'block', margin: 'auto', marginTop: '100px' }} />
+  <img src="./docs/assets/logoSemFundoGG.png" height='300px' style={{ display: 'block', margin: 'auto', marginTop: '100px' }} />
 </p>
 
 # Sobre
 
-Desenvolvimento de um interpretador de C desenvolvido em python como parte da disciplina de Compiladores I, na Faculdade de Ciência, Tecnologia e Engenharia (FCTE) da Universidade de Brasília (UnB).
+Desenvolvimento de um interpretador de C desenvolvido em python como parte da disciplina de Compiladores I, na Faculdade de Ciência, Tecnologia e Engenharia (FCTE) da Universidade de Brasília (UnB) pelo grupo 2 os CobraCai.
 
 Utilizamos o repositório para compor nosso projeto final bem como as atividades realizadas na disciplina semanalmente.
 
