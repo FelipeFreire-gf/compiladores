@@ -1,11 +1,11 @@
-# Interpretador de C desenvolvido em python
+# Interpretador de C desenvolvido em Python
 
-<p align="center" >  <br><img style="border: 0px solid white; border-radius: 10%" src="assets/logoComp.png" width = 40%></p>
+<p align="center" >  <br><img style="border: 0px solid white; border-radius: 10%" src="assets/logoSemFundoGG.png" width = 40%></p>
 <p align="center" > <br></p>
 
 <div style="text-align: justify;">
 <p>
-Desenvolvimento de um interpretador de C desenvolvido em python como parte da disciplina de Compiladores I, na Faculdade de Ciência, Tecnologia e Engenharia (FCTE) da Universidade de Brasília (UnB).
+Desenvolvimento de um interpretador de C desenvolvido em python como parte da disciplina de Compiladores I, na Faculdade de Ciência, Tecnologia e Engenharia (FCTE) da Universidade de Brasília (UnB) pelo grupo CobraCai.
 </p>
 
 <p> 

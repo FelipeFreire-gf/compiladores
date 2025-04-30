@@ -98,11 +98,9 @@ Cada Etapa possui a duração aproximada de duas semanas e foi estruturada com b
 
 ---
 
-## Referência Bibliográfica
+## Bibliografia
 
 SALES, André Barros de. *Ambientação - Aula 1, Exemplo de Cronograma*. Aprender 3. Distrito Federal, 2025. Disponível em: <https://aprender3.unb.br/mod/resource/view.php?id=1390833>. Acesso em: 15 abr. 2025.
-
-Cronograma BilheteriaDigital. Disponível em: <https://requisitos-de-software.github.io/2023.1-BilheteriaDigital/planejamento/cronograma/> . Acesso em 15 de abril de 2025.
 
 ABNT NBR 6022:2018 — Informação e documentação – Artigo em publicação periódica científica impressa – Apresentação.
 
@@ -110,8 +108,7 @@ ABNT NBR 6022:2018 — Informação e documentação – Artigo em publicação 
 
 ## Histórico de Versões
 
-
-| Versão | Data | Descrição | Autor(es) | Revisor(es) |
-|--------|------|-----------|-----------|-------------|
-| 1.0    | 15/04/2025 | Criação do documento. | <a style="color:SteelBlue;" href="https://github.com/FelipeFreire-gf" target="_blank">Felipe</a> | <a style="color:SteelBlue;" href="https://github.com/brenoalexandre0" target="_blank">Breno</a> |
-| 1.1    | 27/04/2025 | Adição do planejamento geral. | <a style="color:SteelBlue;" href="https://github.com/brenoalexandre0" target="_blank">Breno</a> |  |
+| Versão | Data       | Descrição                           | Autor(es) | Revisor(es) |
+|--------|------------|-------------------------------------|-----------|-------------|
+| 1.0    | 11/04/2025 | Desenvolvimento do Artefato         | [Felipe das Neves](https://github.com/FelipeFreire-gf) | [Breno Alexandre](https://github.com/brenoalexandre0) |
+| 1.1    | 27/04/2025 | Adição do planejamento geral         | [Breno Alexandre](https://github.com/brenoalexandre0) | [Felipe das Neves](https://github.com/FelipeFreire-gf) |
