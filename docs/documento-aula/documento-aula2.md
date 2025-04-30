@@ -74,6 +74,7 @@
 
 # Tabela de Versionamento 
 
-| Versão | Data       | Descrição da Alteração              | Nome(s) Integrante(s) |
-| :----: | :--------: | :---------------------------------: | :-------------------: |
-| 1.0    | 28/04/2025 | Criação da atividade de desenvolvimento 2  | [Júlio Cesar](https://github.com/Julio1099)        |
+| Versão | Data       | Descrição                           | Autor(es) | Revisor(es) |
+|--------|------------|-------------------------------------|-----------|-------------|
+| 1.0    | 28/04/2025 | Criação da atividade de desenvolvimento 2        | [Júlio Cesar](https://github.com/Julio1099) | [Felipe das Neves](https://github.com/FelipeFreire-gf) |
+
