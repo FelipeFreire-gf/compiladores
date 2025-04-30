@@ -1,7 +1,7 @@
 repo_url: https://github.com/FelipeFreire-gf/compiladores.git
-repo_name: 2025.1 - Compiladores I
+repo_name: 2025.1 - Os CobraCai 
 
-site_name: Compiladores I
+site_name: CobraCai - Compiladores 1
 
 nav:
   #- Landing Page: landing.html
@@ -30,7 +30,7 @@ nav:
   
 
 theme:
-  logo: assets/icone.png
+  logo: assets/logoSemFundo.ico
   font:
     text: Montserrat
   name: material

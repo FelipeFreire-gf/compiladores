@@ -40,6 +40,6 @@ A equipe utilizou a metodologia ágil Scrum, que permite organizar o trabalho em
 ---
 # Tabela de Versionamento 
 
-| Versão | Data | Descrição da Alteração | Nome(s) Integrante(s) |
-| :----: | :--: | :--------------------: | :-------------------: |
-| 1.0 | 13/04/2025 | Desenvolvimento do tópico | Felipe das Neves |
+| Versão | Data       | Descrição                           | Autor(es) | Revisor(es) |
+|--------|------------|-------------------------------------|-----------|-------------|
+| 1.0    | 11/04/2025 | Criação da seção de heatmap         | [Felipe das Neves](https://github.com/FelipeFreire-gf) | [Lucas Soares](https://github.com/lucaaassb) |
