@@ -76,3 +76,4 @@ Iniciar o desenvolvimento efetivo do compilador/interpretador, concentrando-se n
 | Versão | Data       | Descrição                           | Autor(es) | Revisor(es) |
 |--------|------------|-------------------------------------|-----------|-------------|
 | 1.0    | 28/04/2025 | Criação da atividade de desenvolvimento 3        | [Júlio Cesar](https://github.com/Julio1099) | [Felipe das Neves](https://github.com/FelipeFreire-gf) |
+
