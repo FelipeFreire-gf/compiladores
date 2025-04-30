@@ -30,9 +30,8 @@ Utilizamos o repositório para compor nosso projeto final bem como as atividades
 
 # Equipe
 
-Conheça os membros da equipe "II":
+Conheça os membros do projeto:
                                                                 
-<br></br>
 
 
 | **📸**    | [<img src="https://avatars.githubusercontent.com/u/62055315?v=4" width=100>]() | [<img src="https://avatars.githubusercontent.com/brenoalexandre0" width=100>]() | [<img src="https://avatars.githubusercontent.com/Julio1099" width=100>]() | [<img src="https://avatars.githubusercontent.com/u/82137254?v=4" width=100>]() | [<img src="https://avatars.githubusercontent.com/u/163928510?v=4" width=100>]() | [<img src="https://avatars.githubusercontent.com/u/149620306?v=4" width=100>]() |
