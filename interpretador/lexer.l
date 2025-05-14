@@ -34,9 +34,14 @@ SIMBOLO   [!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|~`´¨ªº°§¬¢£¥€©®™±�
 "{"        { return ABRE_CHAVES; }
 "}"        { return FECHA_CHAVES; }
 ";"        { return PONTO_VIRGULA; }
+"="        { return '='; }
+"+"        { return '+'; }
+"-"        { return '-'; }
+"*"        { return '*'; }
+"/"        { return '/'; }
 
-{DIGITO}+               { yylval.str = strdup(yytext); return NUMERO; }
-{DIGITO}+"."{DIGITO}+   { yylval.str = strdup(yytext); return NUMERO; }
+{DIGITO}+               { yylval.valor = atoi(yytext); return NUMERO; }
+{DIGITO}+"."{DIGITO}+   { yylval.valor = atof(yytext); return NUMERO; }
 {ID}                    { yylval.str = strdup(yytext); return PALAVRA; }
 {SIMBOLO}               { yylval.str = strdup(yytext); return SIMBOLO; }
 [ \t\n]                 ;  // Ignora espaços, tabs e novas linhas
