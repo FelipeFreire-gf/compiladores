@@ -61,6 +61,9 @@ class Interpreter:
         elif node_type == 'return':
             self.return_value = self.eval(node[1])
             
+        elif node_type == 'not':
+            return not self.eval(node[1])
+            
         elif node_type == 'logical':
             left = self.eval(node[2])
             right = self.eval(node[3])

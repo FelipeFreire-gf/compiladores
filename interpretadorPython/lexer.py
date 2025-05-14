@@ -14,7 +14,7 @@ tokens = [
     'ID', 'NUMBER',
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
     'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',
-    'ASSIGN', 'AND', 'OR',
+    'ASSIGN', 'AND', 'OR', 'NOT',
     'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
     'SEMI'
 ] + list(reserved.values())
@@ -32,6 +32,7 @@ t_NE = r'!='
 t_ASSIGN = r'='
 t_AND = r'&&'
 t_OR = r'\|\|'
+t_NOT = r'!'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LBRACE = r'\{'

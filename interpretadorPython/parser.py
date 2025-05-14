@@ -2,6 +2,7 @@ import ply.yacc as yacc
 from lexer import tokens
 
 precedence = (
+    ('right', 'NOT'),
     ('left', 'AND', 'OR'),
     ('left', 'LT', 'LE', 'GT', 'GE', 'EQ', 'NE'),
     ('left', 'PLUS', 'MINUS'),
@@ -74,6 +75,10 @@ def p_while_statement(p):
 def p_return_statement(p):
     'return_statement : RETURN expression SEMI'
     p[0] = ('return', p[2])
+
+def p_expression_not(p):
+    'expression : NOT expression'
+    p[0] = ('not', p[2])
 
 def p_expression_logical(p):
     '''expression : expression AND expression

@@ -79,6 +79,11 @@ def format_ast(node, indent=0):
         result += f"{indent_str}  └─ Right\n"
         result += format_ast(node[3], indent + 2)
 
+    elif node_type == 'not':
+        result += f"{indent_str}└─ Not\n"
+        result += f"{indent_str}  └─ Expression\n"
+        result += format_ast(node[1], indent + 2)
+
     elif node_type == 'number':
         result += f"{indent_str}└─ Num: {node[1]}\n"
 
