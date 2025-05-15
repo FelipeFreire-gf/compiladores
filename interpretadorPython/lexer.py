@@ -16,7 +16,7 @@ tokens = [
     'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',
     'ASSIGN', 'AND', 'OR', 'NOT',
     'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
-    'SEMI'
+    'SEMI', 'COMMA'  # Adicionado suporte a vírgula
 ] + list(reserved.values())
 
 t_PLUS = r'\+'
@@ -38,6 +38,7 @@ t_RPAREN = r'\)'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_SEMI = r';'
+t_COMMA = r','  # Adicionado token para vírgula
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'

@@ -1,6 +1,7 @@
 class Interpreter:
     def __init__(self):
         self.env_stack = [{}]  # Pilha de ambientes
+        self.functions = {}    # Dicionário para armazenar funções
         self.return_value = None
 
     @property
@@ -22,20 +23,33 @@ class Interpreter:
             return None
             
         if ast[0] == 'program':
-            node = ast[1]
-            if node[0] == 'function':
-                return self.interpret_function(node)
+            # Primeiro registra todas as funções
+            for func in ast[1]:
+                if func[0] == 'function':
+                    self.functions[func[2]] = func
+            
+            # Depois executa a main
+            if 'main' in self.functions:
+                return self.interpret_function(self.functions['main'])
             else:
-                return self.eval(node)
+                print("Erro: função 'main' não encontrada")
+                return None
         return None
 
     def interpret_function(self, node):
         self.push_env()  # Novo escopo para a função
         self.return_value = None
-        for stmt in node[3]:  # node[3] agora é a lista de statements
+        
+        # Inicializa parâmetros com valores padrão
+        for param_type, param_name in node[3]:
+            self.env[param_name] = 0
+            
+        # Executa o corpo da função
+        for stmt in node[4]:
             self.eval(stmt)
             if self.return_value is not None:
                 break
+                
         result = self.return_value
         self.pop_env()  # Sai do escopo da função
         return result
@@ -89,6 +103,41 @@ class Interpreter:
                         
         elif node_type == 'return':
             self.return_value = self.eval(node[1])
+            
+        elif node_type == 'function_call':
+            func_name = node[1]
+            if func_name in self.functions:
+                func = self.functions[func_name]
+                
+                # Avalia os argumentos
+                args = [self.eval(arg) for arg in node[2]]
+                
+                # Verifica número de parâmetros
+                if len(args) != len(func[3]):
+                    print(f"Erro: número incorreto de argumentos para {func_name}")
+                    return None
+                    
+                # Cria novo escopo para a chamada
+                self.push_env()
+                
+                # Associa parâmetros aos argumentos
+                for (param_type, param_name), arg_value in zip(func[3], args):
+                    self.env[param_name] = arg_value
+                    
+                # Executa a função
+                result = None
+                for stmt in func[4]:
+                    self.eval(stmt)
+                    if self.return_value is not None:
+                        result = self.return_value
+                        break
+                        
+                self.pop_env()
+                self.return_value = None  # Reseta para chamadas futuras
+                return result
+            else:
+                print(f"Erro: função '{func_name}' não definida")
+                return None
             
         elif isinstance(node, list):  # Bloco de código (compound_statement)
             self.push_env()  # Novo escopo
