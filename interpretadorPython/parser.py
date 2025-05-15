@@ -18,12 +18,20 @@ def p_program(p):
         p[0] = ('program', ('expression_stmt', p[1]))
 
 def p_function(p):
-    '''function : type ID LPAREN RPAREN LBRACE statement_list RBRACE'''
-    p[0] = ('function', p[1], p[2], p[6])
+    '''function : type ID LPAREN RPAREN compound_statement'''
+    p[0] = ('function', p[1], p[2], p[5])
 
 def p_type(p):
     '''type : INT'''
     p[0] = p[1]
+
+def p_compound_statement(p):
+    '''compound_statement : LBRACE statement_list RBRACE
+                         | LBRACE RBRACE'''
+    if len(p) == 4:
+        p[0] = p[2]
+    else:
+        p[0] = []
 
 def p_statement_list(p):
     '''statement_list : statement
@@ -39,7 +47,8 @@ def p_statement(p):
                 | if_statement
                 | while_statement
                 | return_statement
-                | expression SEMI'''
+                | expression SEMI
+                | compound_statement'''
     if len(p) == 2:
         p[0] = p[1]
     else:
@@ -58,19 +67,19 @@ def p_assignment(p):
     p[0] = ('assignment', p[1], p[3])
 
 def p_if_statement(p):
-    '''if_statement : IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-                   | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
-                   | IF LPAREN expression RPAREN LBRACE statement_list RBRACE ELSE if_statement'''
-    if len(p) == 8:
-        p[0] = ('if', p[3], p[6], None)
-    elif len(p) == 12:
-        p[0] = ('if', p[3], p[6], p[10])
+    '''if_statement : IF LPAREN expression RPAREN compound_statement
+                   | IF LPAREN expression RPAREN compound_statement ELSE compound_statement
+                   | IF LPAREN expression RPAREN compound_statement ELSE if_statement'''
+    if len(p) == 6:
+        p[0] = ('if', p[3], p[5], None)
+    elif len(p) == 8:
+        p[0] = ('if', p[3], p[5], p[7])
     else:
-        p[0] = ('if', p[3], p[6], p[9])
+        p[0] = ('if', p[3], p[5], p[7])
 
 def p_while_statement(p):
-    'while_statement : WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE'
-    p[0] = ('while', p[3], p[6])
+    'while_statement : WHILE LPAREN expression RPAREN compound_statement'
+    p[0] = ('while', p[3], p[5])
 
 def p_return_statement(p):
     'return_statement : RETURN expression SEMI'
