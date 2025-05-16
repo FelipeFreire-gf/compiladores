@@ -2,6 +2,7 @@ import ply.lex as lex
 
 reserved = {
     'int': 'INT',
+    'void': 'VOID',
     'return': 'RETURN',
     'if': 'IF',
     'else': 'ELSE',
@@ -16,7 +17,7 @@ tokens = [
     'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',
     'ASSIGN', 'AND', 'OR', 'NOT',
     'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
-    'SEMI', 'COMMA'  # Adicionado suporte a vírgula
+    'SEMI', 'COMMA'
 ] + list(reserved.values())
 
 t_PLUS = r'\+'
@@ -38,7 +39,7 @@ t_RPAREN = r'\)'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_SEMI = r';'
-t_COMMA = r','  # Adicionado token para vírgula
+t_COMMA = r','
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'

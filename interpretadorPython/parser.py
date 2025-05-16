@@ -10,16 +10,29 @@ precedence = (
 )
 
 def p_program(p):
-    '''program : function_list'''
+    '''program : element_list'''
     p[0] = ('program', p[1])
 
-def p_function_list(p):
-    '''function_list : function
-                    | function_list function'''
+def p_element_list(p):
+    '''element_list : element
+                   | element_list element'''
     if len(p) == 2:
         p[0] = [p[1]]
     else:
         p[0] = p[1] + [p[2]]
+
+def p_element(p):
+    '''element : function
+              | declaration'''
+    p[0] = p[1]
+
+def p_function(p):
+    '''function : type ID LPAREN RPAREN compound_statement
+               | type ID LPAREN parameter_list RPAREN compound_statement'''
+    if len(p) == 6:
+        p[0] = ('function', p[1], p[2], [], p[5])
+    else:
+        p[0] = ('function', p[1], p[2], p[4], p[6])
 
 def p_parameter_list(p):
     '''parameter_list : parameter
@@ -31,18 +44,11 @@ def p_parameter_list(p):
 
 def p_parameter(p):
     'parameter : type ID'
-    p[0] = (p[1], p[2])  # (tipo, nome)
-
-def p_function(p):
-    '''function : type ID LPAREN RPAREN compound_statement
-                | type ID LPAREN parameter_list RPAREN compound_statement'''
-    if len(p) == 6:
-        p[0] = ('function', p[1], p[2], [], p[5])
-    else:
-        p[0] = ('function', p[1], p[2], p[4], p[6])
+    p[0] = (p[1], p[2])
 
 def p_type(p):
-    '''type : INT'''
+    '''type : INT
+            | VOID'''
     p[0] = p[1]
 
 def p_compound_statement(p):
@@ -105,14 +111,6 @@ def p_return_statement(p):
     'return_statement : RETURN expression SEMI'
     p[0] = ('return', p[2])
 
-def p_argument_list(p):
-    '''argument_list : expression
-                    | argument_list COMMA expression'''
-    if len(p) == 2:
-        p[0] = [p[1]]
-    else:
-        p[0] = p[1] + [p[3]]
-
 def p_expression_function_call(p):
     '''expression : ID LPAREN RPAREN
                  | ID LPAREN argument_list RPAREN'''
@@ -120,6 +118,14 @@ def p_expression_function_call(p):
         p[0] = ('function_call', p[1], [])
     else:
         p[0] = ('function_call', p[1], p[3])
+
+def p_argument_list(p):
+    '''argument_list : expression
+                    | argument_list COMMA expression'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
 
 def p_expression_not(p):
     'expression : NOT expression'
@@ -150,7 +156,7 @@ def p_expression_group(p):
 def p_expression_bool(p):
     '''expression : TRUE
                  | FALSE'''
-    p[0] = ('bool', p[1] == 'true')
+    p[0] = ('bool', p[1].lower() == 'true')
 
 def p_expression_number(p):
     'expression : NUMBER'

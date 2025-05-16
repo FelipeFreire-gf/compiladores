@@ -13,12 +13,17 @@ def format_ast(node, indent=0):
 
     if node_type == 'program':
         result += f"{indent_str}└─ Program\n"
-        result += format_ast(node[1], indent + 1)
+        for element in node[1]:
+            result += format_ast(element, indent + 1)
 
     elif node_type == 'function':
         result += f"{indent_str}└─ Function: {node[2]} ({node[1]})\n"
+        if node[3]:
+            result += f"{indent_str}  └─ Parameters\n"
+            for param in node[3]:
+                result += f"{indent_str}    └─ {param[1]}: {param[0]}\n"
         result += f"{indent_str}  └─ Body\n"
-        for stmt in node[3]:
+        for stmt in node[4]:
             result += format_ast(stmt, indent + 2)
 
     elif node_type == 'declaration':
@@ -93,6 +98,13 @@ def format_ast(node, indent=0):
     elif node_type == 'id':
         result += f"{indent_str}└─ Var: {node[1]}\n"
 
+    elif node_type == 'function_call':
+        result += f"{indent_str}└─ Call: {node[1]}\n"
+        if node[2]:
+            result += f"{indent_str}  └─ Arguments\n"
+            for arg in node[2]:
+                result += format_ast(arg, indent + 2)
+
     return result
 
 def analisar_parametros(codigo):
@@ -114,10 +126,10 @@ def analisar_parametros(codigo):
     # Interpretação
     interpreter = Interpreter()
     result = interpreter.interpret(resultado)
-    
+
     print("\nResultado:", result)
-    print("Variáveis finais:", interpreter.env)
-    
+    print("Variáveis finais:", interpreter.env_stack[0])  # Mostra apenas o escopo global
+
     return resultado
 
 if __name__ == "__main__":
