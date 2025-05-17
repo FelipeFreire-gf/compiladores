@@ -43,8 +43,12 @@ def p_parameter_list(p):
         p[0] = p[1] + [p[3]]
 
 def p_parameter(p):
-    'parameter : type ID'
-    p[0] = (p[1], p[2])
+    '''parameter : type ID
+                | type ID LBRACKET RBRACKET'''
+    if len(p) == 3:
+        p[0] = (p[1], p[2], False)
+    else:
+        p[0] = (p[1], p[2], True)
 
 def p_type(p):
     '''type : INT
@@ -82,15 +86,33 @@ def p_statement(p):
 
 def p_declaration(p):
     '''declaration : type ID SEMI
-                  | type ID ASSIGN expression SEMI'''
+                  | type ID LBRACKET NUMBER RBRACKET SEMI
+                  | type ID ASSIGN expression SEMI
+                  | type ID LBRACKET NUMBER RBRACKET ASSIGN LBRACE array_init RBRACE SEMI'''
     if len(p) == 4:
         p[0] = ('declaration', p[1], p[2], None)
-    else:
+    elif len(p) == 7 and p[3] == '[':
+        p[0] = ('array_declaration', p[1], p[2], p[4])
+    elif len(p) == 6:
         p[0] = ('declaration', p[1], p[2], p[4])
+    else:
+        p[0] = ('array_declaration_init', p[1], p[2], p[4], p[8])
+
+def p_array_init(p):
+    '''array_init : expression
+                 | array_init COMMA expression'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
 
 def p_assignment(p):
-    'assignment : ID ASSIGN expression SEMI'
-    p[0] = ('assignment', p[1], p[3])
+    '''assignment : ID ASSIGN expression SEMI
+                 | ID LBRACKET expression RBRACKET ASSIGN expression SEMI'''
+    if len(p) == 5:
+        p[0] = ('assignment', p[1], p[3])
+    else:
+        p[0] = ('array_assignment', p[1], p[3], p[6])
 
 def p_if_statement(p):
     '''if_statement : IF LPAREN expression RPAREN compound_statement
@@ -111,9 +133,25 @@ def p_return_statement(p):
     'return_statement : RETURN expression SEMI'
     p[0] = ('return', p[2])
 
-def p_expression_function_call(p):
-    '''expression : ID LPAREN RPAREN
-                 | ID LPAREN argument_list RPAREN'''
+def p_expression(p):
+    '''expression : number
+                 | boolean
+                 | id
+                 | binop_expr
+                 | logical_expr
+                 | not_expr
+                 | group_expr
+                 | function_call
+                 | array_access'''
+    p[0] = p[1]
+
+def p_array_access(p):
+    'array_access : ID LBRACKET expression RBRACKET'
+    p[0] = ('array_access', p[1], p[3])
+
+def p_function_call(p):
+    '''function_call : ID LPAREN RPAREN
+                    | ID LPAREN argument_list RPAREN'''
     if len(p) == 4:
         p[0] = ('function_call', p[1], [])
     else:
@@ -127,17 +165,17 @@ def p_argument_list(p):
     else:
         p[0] = p[1] + [p[3]]
 
-def p_expression_not(p):
-    'expression : NOT expression'
+def p_not_expr(p):
+    'not_expr : NOT expression'
     p[0] = ('not', p[2])
 
-def p_expression_logical(p):
-    '''expression : expression AND expression
-                 | expression OR expression'''
+def p_logical_expr(p):
+    '''logical_expr : expression AND expression
+                   | expression OR expression'''
     p[0] = ('logical', p[2], p[1], p[3])
 
-def p_expression_binop(p):
-    '''expression : expression PLUS expression
+def p_binop_expr(p):
+    '''binop_expr : expression PLUS expression
                  | expression MINUS expression
                  | expression TIMES expression
                  | expression DIVIDE expression
@@ -149,21 +187,21 @@ def p_expression_binop(p):
                  | expression NE expression'''
     p[0] = ('binop', p[2], p[1], p[3])
 
-def p_expression_group(p):
-    'expression : LPAREN expression RPAREN'
+def p_group_expr(p):
+    'group_expr : LPAREN expression RPAREN'
     p[0] = p[2]
 
-def p_expression_bool(p):
-    '''expression : TRUE
-                 | FALSE'''
+def p_boolean(p):
+    '''boolean : TRUE
+              | FALSE'''
     p[0] = ('bool', p[1].lower() == 'true')
 
-def p_expression_number(p):
-    'expression : NUMBER'
+def p_number(p):
+    'number : NUMBER'
     p[0] = ('number', p[1])
 
-def p_expression_id(p):
-    'expression : ID'
+def p_id(p):
+    'id : ID'
     p[0] = ('id', p[1])
 
 def p_error(p):

@@ -1,20 +1,19 @@
 class Interpreter:
     def __init__(self):
-        self.env_stack = [{}]  # Pilha de ambientes (env_stack[0] é o global)
-        self.functions = {}    # Dicionário para armazenar funções
+        self.env_stack = [{}]
+        self.functions = {}
+        self.arrays = {}
         self.return_value = None
-        self.current_function = None  # Controla o contexto de execução
+        self.current_function = None
 
     @property
     def env(self):
         return self.env_stack[-1]
 
     def push_env(self):
-        """Cria um novo escopo"""
         self.env_stack.append({})
 
     def pop_env(self):
-        """Remove o escopo mais recente"""
         if len(self.env_stack) > 1:
             self.env_stack.pop()
 
@@ -24,14 +23,12 @@ class Interpreter:
             return None
             
         if ast[0] == 'program':
-            # Primeiro processa todas as declarações globais e funções
             for element in ast[1]:
                 if element[0] == 'function':
                     self.functions[element[2]] = element
-                elif element[0] == 'declaration':
+                elif element[0] in ['declaration', 'array_declaration', 'array_declaration_init']:
                     self.eval(element)
             
-            # Depois executa a main
             if 'main' in self.functions:
                 return self.interpret_function(self.functions['main'])
             else:
@@ -40,17 +37,18 @@ class Interpreter:
         return None
 
     def interpret_function(self, node):
-        """Executa uma função com novo escopo"""
         previous_function = self.current_function
-        self.current_function = node[2]  # Armazena nome da função atual
+        self.current_function = node[2]
         self.push_env()
         self.return_value = None
         
-        # Inicializa parâmetros
-        for param_type, param_name in node[3]:
-            self.env[param_name] = 0
-            
-        # Executa o corpo
+        for param_type, param_name, is_array in node[3]:
+            if is_array:
+                self.arrays[param_name] = []
+                self.env[param_name] = {'type': 'array', 'size': 0}
+            else:
+                self.env[param_name] = 0
+                
         for stmt in node[4]:
             self.eval(stmt)
             if self.return_value is not None:
@@ -58,7 +56,7 @@ class Interpreter:
                 
         result = self.return_value
         self.pop_env()
-        self.current_function = previous_function  # Restaura contexto
+        self.current_function = previous_function
         return result
 
     def eval(self, node):
@@ -72,25 +70,44 @@ class Interpreter:
             
         elif node_type == 'declaration':
             var_name = node[2]
-            # Declarações no escopo global vão para env_stack[0]
-            if len(self.env_stack) == 1:  # Escopo global
+            if len(self.env_stack) == 1:
                 self.env_stack[0][var_name] = self.eval(node[3]) if node[3] is not None else 0
-            else:  # Escopo local
+            else:
                 self.env[var_name] = self.eval(node[3]) if node[3] is not None else 0
                 
+        elif node_type == 'array_declaration':
+            type_, name, size = node[1], node[2], node[3]
+            self.arrays[name] = [0] * size
+            self.env[name] = {'type': 'array', 'size': size}
+            
+        elif node_type == 'array_declaration_init':
+            type_, name, size, values = node[1], node[2], node[3], node[4]
+            self.arrays[name] = [self.eval(val) for val in values]
+            if len(self.arrays[name]) != size:
+                print(f"Aviso: Tamanho do array '{name}' não corresponde à inicialização")
+            self.env[name] = {'type': 'array', 'size': size}
+            
         elif node_type == 'assignment':
             var_name = node[1]
-            # Em funções, verifica se é uma variável global existente
             if self.current_function and var_name in self.env_stack[0] and var_name not in self.env:
                 self.env_stack[0][var_name] = self.eval(node[2])
             else:
-                # Atribuição normal (procura em todos os escopos)
                 for env in reversed(self.env_stack):
                     if var_name in env:
                         env[var_name] = self.eval(node[2])
                         return
-                # Se não encontrou, cria no escopo atual
                 self.env[var_name] = self.eval(node[2])
+            
+        elif node_type == 'array_assignment':
+            array_name, index_expr, value_expr = node[1], node[2], node[3]
+            if array_name not in self.arrays:
+                print(f"Erro: Array '{array_name}' não declarado")
+                return
+            index = self.eval(index_expr)
+            if not isinstance(index, int) or index < 0 or index >= len(self.arrays[array_name]):
+                print(f"Erro: Índice {index} inválido para array '{array_name}'")
+                return
+            self.arrays[array_name][index] = self.eval(value_expr)
             
         elif node_type == 'if':
             if self.eval(node[1]):
@@ -124,8 +141,6 @@ class Interpreter:
             func_name = node[1]
             if func_name in self.functions:
                 func = self.functions[func_name]
-                
-                # Avalia argumentos
                 args = [self.eval(arg) for arg in node[2]]
                 
                 if len(args) != len(func[3]):
@@ -134,11 +149,13 @@ class Interpreter:
                     
                 self.push_env()
                 
-                # Associa parâmetros
-                for (param_type, param_name), arg_value in zip(func[3], args):
-                    self.env[param_name] = arg_value
-                    
-                # Executa função
+                for (param_type, param_name, is_array), arg_value in zip(func[3], args):
+                    if is_array:
+                        self.arrays[param_name] = arg_value.copy() if isinstance(arg_value, list) else arg_value
+                        self.env[param_name] = {'type': 'array', 'size': len(self.arrays[param_name])}
+                    else:
+                        self.env[param_name] = arg_value
+                        
                 result = None
                 for stmt in func[4]:
                     self.eval(stmt)
@@ -153,7 +170,7 @@ class Interpreter:
                 print(f"Erro: função '{func_name}' não definida")
                 return None
             
-        elif isinstance(node, list):  # Bloco de código
+        elif isinstance(node, list):
             self.push_env()
             for stmt in node:
                 self.eval(stmt)
@@ -194,13 +211,27 @@ class Interpreter:
             return node[1]
             
         elif node_type == 'id':
-            # Dentro de função, verifica se é global
-            if self.current_function and node[1] in self.env_stack[0] and node[1] not in self.env:
-                return self.env_stack[0][node[1]]
-            # Busca normal na pilha
+            var_name = node[1]
+            if var_name in self.arrays:
+                return self.arrays[var_name]
+                
+            if self.current_function and var_name not in self.env and var_name in self.env_stack[0]:
+                return self.env_stack[0][var_name]
+                
             for env in reversed(self.env_stack):
-                if node[1] in env:
-                    return env[node[1]]
-            return 0  # Valor padrão para variáveis não declaradas
+                if var_name in env:
+                    return env[var_name]
+            return 0
+            
+        elif node_type == 'array_access':
+            array_name, index_expr = node[1], node[2]
+            if array_name not in self.arrays:
+                print(f"Erro: Array '{array_name}' não declarado")
+                return 0
+            index = self.eval(index_expr)
+            if not isinstance(index, int) or index < 0 or index >= len(self.arrays[array_name]):
+                print(f"Erro: Índice {index} inválido para array '{array_name}'")
+                return 0
+            return self.arrays[array_name][index]
 
         return None

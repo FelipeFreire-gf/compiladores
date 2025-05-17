@@ -21,7 +21,7 @@ def format_ast(node, indent=0):
         if node[3]:
             result += f"{indent_str}  └─ Parameters\n"
             for param in node[3]:
-                result += f"{indent_str}    └─ {param[1]}: {param[0]}\n"
+                result += f"{indent_str}    └─ {param[1]}: {param[0]}{'[]' if param[2] else ''}\n"
         result += f"{indent_str}  └─ Body\n"
         for stmt in node[4]:
             result += format_ast(stmt, indent + 2)
@@ -32,10 +32,34 @@ def format_ast(node, indent=0):
             result += f"{indent_str}  └─ Value\n"
             result += format_ast(node[3], indent + 2)
 
+    elif node_type == 'array_declaration':
+        result += f"{indent_str}└─ Array Declare: {node[2]} ({node[1]})[{node[3]}]\n"
+
+    elif node_type == 'array_declaration_init':
+        result += f"{indent_str}└─ Array Declare Init: {node[2]} ({node[1]})[{node[3]}]\n"
+        result += f"{indent_str}  └─ Values\n"
+        for val in node[4]:
+            result += format_ast(val, indent + 2)
+
     elif node_type == 'assignment':
         result += f"{indent_str}└─ Assign: {node[1]}\n"
         result += f"{indent_str}  └─ Value\n"
         result += format_ast(node[2], indent + 2)
+
+    elif node_type == 'array_assignment':
+        array_name = node[1]
+        index_node = node[2]
+        value_node = node[3]
+        
+        # Formata o índice de forma mais limpa
+        if index_node[0] == 'number':
+            index_str = str(index_node[1])
+        else:
+            index_str = format_ast(index_node, 0).strip()
+        
+        result += f"{indent_str}└─ Array Assign: {array_name}[{index_str}]\n"
+        result += f"{indent_str}  └─ Value\n"
+        result += format_ast(value_node, indent + 2)
 
     elif node_type == 'if':
         result += f"{indent_str}└─ If\n"
@@ -105,6 +129,18 @@ def format_ast(node, indent=0):
             for arg in node[2]:
                 result += format_ast(arg, indent + 2)
 
+    elif node_type == 'array_access':
+        array_name = node[1]
+        index_node = node[2]
+        
+        # Formata o índice de forma mais limpa
+        if index_node[0] == 'number':
+            index_str = str(index_node[1])
+        else:
+            index_str = format_ast(index_node, 0).strip()
+        
+        result += f"{indent_str}└─ Array Access: {array_name}[{index_str}]\n"
+
     return result
 
 def analisar_parametros(codigo):
@@ -128,7 +164,10 @@ def analisar_parametros(codigo):
     result = interpreter.interpret(resultado)
 
     print("\nResultado:", result)
-    print("Variáveis finais:", interpreter.env_stack[0])  # Mostra apenas o escopo global
+    print("Variáveis finais:", interpreter.env_stack[0])
+    print("Arrays finais:")
+    for name, arr in interpreter.arrays.items():
+        print(f"  {name}: {arr}")
 
     return resultado
 

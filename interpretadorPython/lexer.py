@@ -17,6 +17,7 @@ tokens = [
     'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',
     'ASSIGN', 'AND', 'OR', 'NOT',
     'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
+    'LBRACKET', 'RBRACKET',
     'SEMI', 'COMMA'
 ] + list(reserved.values())
 
@@ -38,6 +39,8 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
+t_LBRACKET = r'\['
+t_RBRACKET = r'\]'
 t_SEMI = r';'
 t_COMMA = r','
 
