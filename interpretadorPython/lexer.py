@@ -18,7 +18,8 @@ tokens = [
     'ASSIGN', 'AND', 'OR', 'NOT',
     'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
     'LBRACKET', 'RBRACKET',
-    'SEMI', 'COMMA'
+    'SEMI', 'COMMA',
+    'AMPERSAND'  # Operador de endereço
 ] + list(reserved.values())
 
 t_PLUS = r'\+'
@@ -43,6 +44,7 @@ t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 t_SEMI = r';'
 t_COMMA = r','
+t_AMPERSAND = r'&'
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
