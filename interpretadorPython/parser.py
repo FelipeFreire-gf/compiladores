@@ -6,7 +6,7 @@ precedence = (
     ('left', 'AND', 'OR'),
     ('left', 'LT', 'LE', 'GT', 'GE', 'EQ', 'NE'),
     ('left', 'PLUS', 'MINUS'),
-    ('left', 'TIMES', 'DIVIDE'),
+    ('left', 'TIMES', 'DIVIDE', 'MOD'),
 )
 
 def p_program(p):
@@ -179,6 +179,7 @@ def p_binop_expr(p):
                  | expression MINUS expression
                  | expression TIMES expression
                  | expression DIVIDE expression
+                 | expression MOD expression
                  | expression LT expression
                  | expression LE expression
                  | expression GT expression
