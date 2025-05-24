@@ -3,9 +3,8 @@ class Interpreter:
         self.env_stack = [{}]
         self.functions = {}
         self.arrays = {}
-        self.pointers = {}  # Armazena os ponteiros
-        self.memory = {}    # Memória simulada
-        self.next_address = 1000  # Endereço inicial para alocação
+        self.pointers = {}     # Novo: dicionário de ponteiros
+        self.memory_counter = 1000  # Novo: contador para endereços simulados
         self.return_value = None
         self.current_function = None
 
@@ -20,28 +19,11 @@ class Interpreter:
         if len(self.env_stack) > 1:
             self.env_stack.pop()
 
-    def allocate_memory(self, size=1):
-        """Aloca memória e retorna o endereço base"""
-        address = self.next_address
-        self.next_address += size
-        self.memory[address] = [0] * size
-        return address
-
-    def free_memory(self, address):
-        """Libera a memória alocada"""
-        if address in self.memory:
-            del self.memory[address]
-
-    def get_pointer_value(self, address, offset=0):
-        """Obtém o valor apontado pelo ponteiro"""
-        if address in self.memory:
-            return self.memory[address][offset]
-        return None
-
-    def set_pointer_value(self, address, value, offset=0):
-        """Define o valor apontado pelo ponteiro"""
-        if address in self.memory:
-            self.memory[address][offset] = value
+    def alloc_address(self):
+        """Novo: aloca um endereço simulado para ponteiros"""
+        addr = self.memory_counter
+        self.memory_counter += 1
+        return addr
 
     def interpret(self, ast):
         if ast is None:
@@ -52,7 +34,7 @@ class Interpreter:
             for element in ast[1]:
                 if element[0] == 'function':
                     self.functions[element[2]] = element
-                elif element[0] in ['declaration', 'array_declaration', 'array_declaration_init', 'pointer_declaration']:
+                elif element[0] in ['declaration', 'array_declaration', 'array_declaration_init', 'pointer_decl']:  # Adicionado 'pointer_decl'
                     self.eval(element)
             
             if 'main' in self.functions:
@@ -68,10 +50,9 @@ class Interpreter:
         self.push_env()
         self.return_value = None
         
-        for param_type, param_name, is_array, is_pointer in node[3]:
-            if is_pointer:
-                self.pointers[param_name] = self.allocate_memory()
-                self.env[param_name] = {'type': 'pointer', 'address': self.pointers[param_name]}
+        for param_type, param_name, is_array in node[3]:
+            if isinstance(param_type, tuple) and param_type[2] > 0:  # Novo: parâmetro é ponteiro
+                self.env[param_name] = None
             elif is_array:
                 self.arrays[param_name] = []
                 self.env[param_name] = {'type': 'array', 'size': 0}
@@ -96,6 +77,69 @@ class Interpreter:
         
         if node_type == 'expression_stmt':
             return self.eval(node[1])
+            
+        # Novo: declaração de ponteiro
+        elif node_type == 'pointer_decl':
+            var_type, var_name, init_value = node[1], node[2], node[3]
+            
+            if init_value is not None:
+                if init_value[0] == 'pointer_op' and init_value[1] == '&':
+                    # int *ptr = &x;
+                    target_var = init_value[2][1]
+                    addr = self.alloc_address()
+                    self.pointers[addr] = ('var', target_var)
+                    self.env[var_name] = addr
+                else:
+                    # int *ptr = NULL;
+                    self.env[var_name] = self.eval(init_value)
+            else:
+                # int *ptr;
+                self.env[var_name] = None
+        
+        # Novo: atribuição via ponteiro
+        elif node_type == 'pointer_assignment':
+            ptr_name = node[1]
+            value = self.eval(node[2])
+            
+            if ptr_name in self.env:
+                ptr_addr = self.env[ptr_name]
+                if ptr_addr in self.pointers:
+                    _, target_var = self.pointers[ptr_addr]
+                    # Procura a variável em todos os escopos
+                    for env in reversed(self.env_stack):
+                        if target_var in env:
+                            env[target_var] = value
+                            return
+                    print(f"Erro: variável '{target_var}' não encontrada")
+                else:
+                    print(f"Erro: '{ptr_name}' não é um ponteiro válido")
+            else:
+                print(f"Erro: ponteiro '{ptr_name}' não declarado")
+        
+        # Novo: operações com ponteiros
+        elif node_type == 'pointer_op':
+            op, expr = node[1], node[2]
+            
+            if op == '&':  # Operador de endereço
+                var_name = expr[1]  # Assume que expr é um 'id'
+                for env in reversed(self.env_stack):
+                    if var_name in env:
+                        addr = self.alloc_address()
+                        self.pointers[addr] = ('var', var_name)
+                        return addr
+                print(f"Erro: variável '{var_name}' não encontrada")
+                return 0
+                
+            elif op == '*':  # Dereferenciação
+                ptr_val = self.eval(expr)
+                if ptr_val in self.pointers:
+                    _, target_var = self.pointers[ptr_val]
+                    for env in reversed(self.env_stack):
+                        if target_var in env:
+                            return env[target_var]
+                    return 0
+                print(f"Erro: ponteiro inválido")
+                return 0
             
         elif node_type == 'declaration':
             var_name = node[2]
@@ -179,7 +223,9 @@ class Interpreter:
                 self.push_env()
                 
                 for (param_type, param_name, is_array), arg_value in zip(func[3], args):
-                    if is_array:
+                    if isinstance(param_type, tuple) and param_type[2] > 0:  # Ponteiro como parâmetro
+                        self.env[param_name] = arg_value
+                    elif is_array:
                         self.arrays[param_name] = arg_value.copy() if isinstance(arg_value, list) else arg_value
                         self.env[param_name] = {'type': 'array', 'size': len(self.arrays[param_name])}
                     else:
@@ -224,6 +270,7 @@ class Interpreter:
                 '-': lambda a, b: a - b,
                 '*': lambda a, b: a * b,
                 '/': lambda a, b: a // b,
+                '%': lambda a, b: a % b,
                 '<': lambda a, b: a < b,
                 '<=': lambda a, b: a <= b,
                 '>': lambda a, b: a > b,
@@ -241,12 +288,12 @@ class Interpreter:
             
         elif node_type == 'id':
             var_name = node[1]
-            if var_name in self.pointers:
-                return self.pointers[var_name]
-            elif var_name in self.arrays:
+            if var_name in self.arrays:
                 return self.arrays[var_name]
-            elif self.current_function and var_name not in self.env and var_name in self.env_stack[0]:
+                
+            if self.current_function and var_name not in self.env and var_name in self.env_stack[0]:
                 return self.env_stack[0][var_name]
+                
             for env in reversed(self.env_stack):
                 if var_name in env:
                     return env[var_name]
@@ -262,48 +309,5 @@ class Interpreter:
                 print(f"Erro: Índice {index} inválido para array '{array_name}'")
                 return 0
             return self.arrays[array_name][index]
-
-        elif node_type == 'pointer_declaration':
-            var_name = node[2]
-            if node[3] is not None:  # Inicialização
-                value = self.eval(node[3])
-                if isinstance(value, int):  # Endereço direto
-                    self.pointers[var_name] = value
-                else:  # Valor a ser armazenado
-                    address = self.allocate_memory()
-                    self.set_pointer_value(address, value)
-                    self.pointers[var_name] = address
-            else:
-                self.pointers[var_name] = self.allocate_memory()
-            self.env[var_name] = {'type': 'pointer', 'address': self.pointers[var_name]}
-
-        elif node_type == 'pointer_assignment':
-            ptr_name = node[1]
-            if ptr_name in self.pointers:
-                value = self.eval(node[2])
-                self.set_pointer_value(self.pointers[ptr_name], value)
-            else:
-                print(f"Erro: Ponteiro '{ptr_name}' não declarado")
-
-        elif node_type == 'pointer_dereference':
-            ptr_name = node[1]
-            if ptr_name in self.pointers:
-                return self.get_pointer_value(self.pointers[ptr_name])
-            else:
-                print(f"Erro: Ponteiro '{ptr_name}' não declarado")
-                return None
-
-        elif node_type == 'address_of':
-            var_name = node[1]
-            if var_name in self.env:
-                if isinstance(self.env[var_name], dict) and self.env[var_name]['type'] == 'pointer':
-                    return self.env[var_name]['address']
-                else:
-                    address = self.allocate_memory()
-                    self.set_pointer_value(address, self.env[var_name])
-                    return address
-            else:
-                print(f"Erro: Variável '{var_name}' não declarada")
-                return None
 
         return None
