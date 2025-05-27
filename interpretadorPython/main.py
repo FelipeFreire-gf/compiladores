@@ -51,7 +51,6 @@ def format_ast(node, indent=0):
         index_node = node[2]
         value_node = node[3]
         
-        # Formata o índice de forma mais limpa
         if index_node[0] == 'number':
             index_str = str(index_node[1])
         else:
@@ -122,6 +121,9 @@ def format_ast(node, indent=0):
     elif node_type == 'id':
         result += f"{indent_str}└─ Var: {node[1]}\n"
 
+    elif node_type == 'string':
+        result += f"{indent_str}└─ String: \"{node[1]}\"\n"
+
     elif node_type == 'function_call':
         result += f"{indent_str}└─ Call: {node[1]}\n"
         if node[2]:
@@ -129,17 +131,28 @@ def format_ast(node, indent=0):
             for arg in node[2]:
                 result += format_ast(arg, indent + 2)
 
+    elif node_type == 'print':
+        result += f"{indent_str}└─ Print\n"
+        result += f"{indent_str}  └─ Arguments\n"
+        for arg in node[1]:
+            result += format_ast(arg, indent + 2)
+        
+    elif node_type == 'input':
+        result += f"{indent_str}└─ Input\n"
+
     elif node_type == 'array_access':
         array_name = node[1]
         index_node = node[2]
         
-        # Formata o índice de forma mais limpa
         if index_node[0] == 'number':
             index_str = str(index_node[1])
         else:
             index_str = format_ast(index_node, 0).strip()
         
         result += f"{indent_str}└─ Array Access: {array_name}[{index_str}]\n"
+
+    elif node_type == 'include':
+        result += f"{indent_str}└─ Include: {node[1]}\n"
 
     return result
 
@@ -163,11 +176,14 @@ def analisar_parametros(codigo):
     interpreter = Interpreter()
     result = interpreter.interpret(resultado)
 
-    print("\nResultado:", result)
-    print("Variáveis finais:", interpreter.env_stack[0])
-    print("Arrays finais:")
-    for name, arr in interpreter.arrays.items():
-        print(f"  {name}: {arr}")
+    print("\n=== RESUMO FINAL ===")
+    print(f"Valor retornado: {result}")
+    print("\nVariáveis globais:", interpreter.env_stack[0])
+    if len(interpreter.env_stack) > 1:
+        print("\nVariáveis locais:", interpreter.env_stack[-1])
+    else:
+        print("\nNenhuma variável local declarada")
+    print("\nArrays declarados:", interpreter.arrays or "Nenhum")
 
     return resultado
 

@@ -2,8 +2,7 @@ import ply.yacc as yacc
 from lexer import tokens
 
 precedence = (
-    ('right', 'NOT'),
-    ('right', 'ADDRESS', 'TIMES'),
+    ('right', 'NOT', 'ADDRESS'),
     ('left', 'AND', 'OR'),
     ('left', 'LT', 'LE', 'GT', 'GE', 'EQ', 'NE'),
     ('left', 'PLUS', 'MINUS'),
@@ -24,8 +23,13 @@ def p_element_list(p):
 
 def p_element(p):
     '''element : function
-              | declaration'''
+              | declaration
+              | include'''
     p[0] = p[1]
+
+def p_include(p):
+    '''include : INCLUDE'''
+    p[0] = ('include', p[1])
 
 def p_function(p):
     '''function : type ID LPAREN RPAREN compound_statement
@@ -58,11 +62,11 @@ def p_base_type(p):
 
 def p_type(p):
     '''type : base_type
-            | type TIMES'''  # Agora usa TIMES para ponteiros
+            | type TIMES'''
     if len(p) == 2:
-        p[0] = ('type', p[1], 0)  # Tipo base (ex: int)
+        p[0] = ('type', p[1], 0)
     else:
-        p[0] = ('type', p[1][1], p[1][2] + 1)  # Ponteiro (ex: int*)
+        p[0] = ('type', p[1][1], p[1][2] + 1)
 
 def p_pointer_expr(p):
     '''pointer_expr : ADDRESS id
@@ -144,11 +148,6 @@ def p_assignment(p):
     else:
         p[0] = ('array_assignment', p[1], p[3], p[6])
 
-
-def p_assignment_deref(p):
-    '''assignment : TIMES ID ASSIGN expression SEMI'''
-    p[0] = ('pointer_assignment', p[2], p[4])
-
 def p_if_statement(p):
     '''if_statement : IF LPAREN expression RPAREN compound_statement
                    | IF LPAREN expression RPAREN compound_statement ELSE compound_statement
@@ -157,20 +156,23 @@ def p_if_statement(p):
         p[0] = ('if', p[3], p[5], None)
     elif len(p) == 8:
         p[0] = ('if', p[3], p[5], p[7])
-    else:
-        p[0] = ('if', p[3], p[5], p[7])
 
 def p_while_statement(p):
     'while_statement : WHILE LPAREN expression RPAREN compound_statement'
     p[0] = ('while', p[3], p[5])
 
 def p_return_statement(p):
-    'return_statement : RETURN expression SEMI'
-    p[0] = ('return', p[2])
+    '''return_statement : RETURN expression SEMI
+                       | RETURN SEMI'''  # Para return sem valor
+    if len(p) == 4:
+        p[0] = ('return', p[2])
+    else:
+        p[0] = ('return', None)
 
 def p_expression(p):
     '''expression : number
                  | boolean
+                 | string
                  | id
                  | binop_expr
                  | logical_expr
@@ -181,17 +183,31 @@ def p_expression(p):
                  | pointer_expr'''
     p[0] = p[1]
 
+def p_string(p):
+    'string : STRING'
+    p[0] = ('string', p[1])
+
 def p_array_access(p):
     'array_access : ID LBRACKET expression RBRACKET'
     p[0] = ('array_access', p[1], p[3])
 
 def p_function_call(p):
     '''function_call : ID LPAREN RPAREN
-                    | ID LPAREN argument_list RPAREN'''
+                    | ID LPAREN argument_list RPAREN
+                    | PRINT LPAREN argument_list RPAREN
+                    | INPUT LPAREN RPAREN'''
     if len(p) == 4:
-        p[0] = ('function_call', p[1], [])
+        if p[1] == 'input':
+            p[0] = ('input',)
+        else:
+            p[0] = ('function_call', p[1], [])
+    elif len(p) == 5:
+        if p[1] == 'print':
+            p[0] = ('print', p[3])
+        else:
+            p[0] = ('function_call', p[1], p[3])
     else:
-        p[0] = ('function_call', p[1], p[3])
+        p[0] = ('input',)
 
 def p_argument_list(p):
     '''argument_list : expression
