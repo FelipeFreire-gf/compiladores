@@ -1,7 +1,7 @@
 repo_url: https://github.com/FelipeFreire-gf/compiladores.git
-repo_name: 2025.1 - Compiladores I
+repo_name: 2025.1 - Os CobraCai 
 
-site_name: Compiladores I
+site_name: CobraCai - Compiladores 1
 
 nav:
   #- Landing Page: landing.html
@@ -14,18 +14,29 @@ nav:
       - Cronograma Executado: "documento-planejamento/cronograma-executado.md"
       - Ferramentas: "documento-planejamento/ferramentas-utilizadas.md"
       - Metodologia: "documento-planejamento/metodologias-utilizadas.md"
+      
+  - Atas:
+        - Ata Reunião 1: "atas-reuniao/ata-reuniao-1.md"
+        - Ata Reunião 2: "atas-reuniao/ata-reuniao-2.md"
+        - Ata Reunião 3: "atas-reuniao/ata-reuniao-3.md"
+        - Ata Reunião 4: "atas-reuniao/ata-reuniao-4.md"
+        - Ata Reunião 5: "atas-reuniao/ata-reuniao-5.md"
+        - Ata Reunião 6: "atas-reuniao/ata-reunicao-6.md"  
+        - Ata Reunião 7: "atas-reuniao/ata-reuniao-7.md"  
 
   - Atividades Desenvolvidas em Aula: 
       - Projeto Aula 1: "documento-aula/documento-aula1.md"    
       - Projeto Aula 2: "documento-aula/documento-aula2.md" 
       - Projeto Aula 3: "documento-aula/documento-aula3.md" 
+      - Projeto Aula 4: "documento-aula/documento-aula4.md" 
+      - Projeto Aula 5: "documento-aula/documento-aula5.md" 
 
   - Entregas:
     - Entrega 1: "entregas/entregas1.md" 
   
 
 theme:
-  logo: assets/icone.png
+  logo: assets/logoSemFundo.ico
   font:
     text: Montserrat
   name: material

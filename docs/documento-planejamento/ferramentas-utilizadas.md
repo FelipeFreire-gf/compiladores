@@ -31,11 +31,6 @@ Nesta seção, apresentamos as ferramentas utilizadas pela equipe na etapa de pl
       <td>Produção e edição colaborativa de documentos. <a id="anchor_3" href="#FRM3">³</a></td>
     </tr>
     <tr>
-      <td><img src="https://raw.githubusercontent.com/Requisitos-de-Software/2025.1-CelularSeguro/refs/heads/main/Docs/assets/Ferramentas/Google_Sheets_2020_Logo.svg.png" width="80" height="80"/></td>
-      <td>Google Sheets</td>
-      <td>Organização de cronogramas e tarefas. <a id="anchor_4" href="#FRM4">⁴</a></td>
-    </tr>
-    <tr>
       <td><img src="https://raw.githubusercontent.com/Requisitos-de-Software/2025.1-CelularSeguro/refs/heads/main/Docs/assets/Ferramentas/Google_Drive_icon_(2020).svg.png" width="80" height="80"/></td>
       <td>Google Drive</td>
       <td>Armazenamento e compartilhamento de arquivos. <a id="anchor_5" href="#FRM5">⁵</a></td>
@@ -49,11 +44,6 @@ Nesta seção, apresentamos as ferramentas utilizadas pela equipe na etapa de pl
       <td><img src="https://raw.githubusercontent.com/Requisitos-de-Software/2025.1-CelularSeguro/refs/heads/main/Docs/assets/Ferramentas/Microsoft_Paint.svg.png" width="80" height="80"/></td>
       <td>Paint</td>
       <td>Edição básica de imagens e ilustrações rápidas. <a id="anchor_7" href="#FRM7">⁷</a></td>
-    </tr>
-    <tr>
-      <td><img src="https://raw.githubusercontent.com/Requisitos-de-Software/2025.1-CelularSeguro/refs/heads/main/Docs/assets/Ferramentas/Astah.png" width="80" height="80"/></td>
-      <td>Astah</td>
-      <td>Modelagem UML e outras representações visuais. <a id="anchor_8" href="#FRM8">⁸</a></td>
     </tr>
     <tr>
       <td><img src="https://raw.githubusercontent.com/Requisitos-de-Software/2025.1-CelularSeguro/refs/heads/main/Docs/assets/Ferramentas/mkdocs.png" width="80" height="80"/></td>
@@ -113,7 +103,6 @@ Nesta seção, apresentamos as ferramentas utilizadas pela equipe na etapa de pl
 ---
 # Tabela de Versionamento 
 
-| Versão | Data | Descrição da Alteração | Nome(s) Integrante(s) |
-| :----: | :--: | :--------------------: | :-------------------: |
-| 1.0 | 13/04/2025 | Desenvolvimento do tópico | Arthur Carvalho |
-| 1.0 | 13/04/2025 | Inserção das imagens nas tabelas | Felipe das Neves |
+| Versão | Data       | Descrição                           | Autor(es) | Revisor(es) |
+|--------|------------|-------------------------------------|-----------|-------------|
+| 1.0    | 11/04/2025 | Criação do tópico de ferramentas utilizadas      | [Felipe das Neves](https://github.com/FelipeFreire-gf) | [Lucas Soares](https://github.com/lucaaassb) |
