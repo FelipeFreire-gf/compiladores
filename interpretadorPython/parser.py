@@ -2,7 +2,7 @@ import ply.yacc as yacc
 from lexer import tokens
 
 precedence = (
-    ('right', 'NOT'),
+    ('right', 'NOT', 'ADDRESS'),
     ('left', 'AND', 'OR'),
     ('left', 'LT', 'LE', 'GT', 'GE', 'EQ', 'NE'),
     ('left', 'PLUS', 'MINUS'),
@@ -23,8 +23,13 @@ def p_element_list(p):
 
 def p_element(p):
     '''element : function
-              | declaration'''
+              | declaration
+              | include'''
     p[0] = p[1]
+
+def p_include(p):
+    '''include : INCLUDE'''
+    p[0] = ('include', p[1])
 
 def p_function(p):
     '''function : type ID LPAREN RPAREN compound_statement
@@ -50,10 +55,24 @@ def p_parameter(p):
     else:
         p[0] = (p[1], p[2], True)
 
-def p_type(p):
-    '''type : INT
-            | VOID'''
+def p_base_type(p):
+    '''base_type : INT
+                | VOID'''
     p[0] = p[1]
+
+def p_type(p):
+    '''type : base_type
+            | type TIMES'''
+    if len(p) == 2:
+        p[0] = ('type', p[1], 0)
+    else:
+        p[0] = ('type', p[1][1], p[1][2] + 1)
+
+def p_pointer_expr(p):
+    '''pointer_expr : ADDRESS id
+                   | TIMES id
+                   | TIMES pointer_expr'''
+    p[0] = ('pointer_op', p[1], p[2])
 
 def p_compound_statement(p):
     '''compound_statement : LBRACE statement_list RBRACE
@@ -84,6 +103,18 @@ def p_statement(p):
     else:
         p[0] = ('expression_stmt', p[1])
 
+def p_pointer_declaration(p):
+    '''declaration : type TIMES ID SEMI
+                   | type TIMES ID ASSIGN expression SEMI'''
+    if len(p) == 5:
+        p[0] = ('pointer_decl', p[1], p[3], None)
+    else:
+        p[0] = ('pointer_decl', p[1], p[3], p[5])
+
+def p_pointer_assignment(p):
+    '''statement : TIMES ID ASSIGN expression SEMI'''
+    p[0] = ('pointer_assignment', p[2], p[4])
+
 def p_declaration(p):
     '''declaration : type ID SEMI
                   | type ID LBRACKET NUMBER RBRACKET SEMI
@@ -108,8 +139,11 @@ def p_array_init(p):
 
 def p_assignment(p):
     '''assignment : ID ASSIGN expression SEMI
-                 | ID LBRACKET expression RBRACKET ASSIGN expression SEMI'''
-    if len(p) == 5:
+                  | ID LBRACKET expression RBRACKET ASSIGN expression SEMI
+                  | expression ASSIGN expression SEMI'''
+    if len(p) == 5 and isinstance(p[1], tuple):
+        p[0] = ('assignment_expr', p[1], p[3])
+    elif len(p) == 5:
         p[0] = ('assignment', p[1], p[3])
     else:
         p[0] = ('array_assignment', p[1], p[3], p[6])
@@ -122,28 +156,36 @@ def p_if_statement(p):
         p[0] = ('if', p[3], p[5], None)
     elif len(p) == 8:
         p[0] = ('if', p[3], p[5], p[7])
-    else:
-        p[0] = ('if', p[3], p[5], p[7])
 
 def p_while_statement(p):
     'while_statement : WHILE LPAREN expression RPAREN compound_statement'
     p[0] = ('while', p[3], p[5])
 
 def p_return_statement(p):
-    'return_statement : RETURN expression SEMI'
-    p[0] = ('return', p[2])
+    '''return_statement : RETURN expression SEMI
+                       | RETURN SEMI'''  # Para return sem valor
+    if len(p) == 4:
+        p[0] = ('return', p[2])
+    else:
+        p[0] = ('return', None)
 
 def p_expression(p):
     '''expression : number
                  | boolean
+                 | string
                  | id
                  | binop_expr
                  | logical_expr
                  | not_expr
                  | group_expr
                  | function_call
-                 | array_access'''
+                 | array_access
+                 | pointer_expr'''
     p[0] = p[1]
+
+def p_string(p):
+    'string : STRING'
+    p[0] = ('string', p[1])
 
 def p_array_access(p):
     'array_access : ID LBRACKET expression RBRACKET'
@@ -151,11 +193,21 @@ def p_array_access(p):
 
 def p_function_call(p):
     '''function_call : ID LPAREN RPAREN
-                    | ID LPAREN argument_list RPAREN'''
+                    | ID LPAREN argument_list RPAREN
+                    | PRINT LPAREN argument_list RPAREN
+                    | INPUT LPAREN RPAREN'''
     if len(p) == 4:
-        p[0] = ('function_call', p[1], [])
+        if p[1] == 'input':
+            p[0] = ('input',)
+        else:
+            p[0] = ('function_call', p[1], [])
+    elif len(p) == 5:
+        if p[1] == 'print':
+            p[0] = ('print', p[3])
+        else:
+            p[0] = ('function_call', p[1], p[3])
     else:
-        p[0] = ('function_call', p[1], p[3])
+        p[0] = ('input',)
 
 def p_argument_list(p):
     '''argument_list : expression

@@ -8,17 +8,19 @@ reserved = {
     'else': 'ELSE',
     'while': 'WHILE',
     'true': 'TRUE',
-    'false': 'FALSE'
+    'false': 'FALSE',
+    'print': 'PRINT',
+    'input': 'INPUT'
 }
 
 tokens = [
-    'ID', 'NUMBER',
+    'ID', 'NUMBER', 'STRING', 'INCLUDE',
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
     'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',
     'ASSIGN', 'AND', 'OR', 'NOT',
     'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
     'LBRACKET', 'RBRACKET',
-    'SEMI', 'COMMA', 'MOD'
+    'SEMI', 'COMMA', 'MOD', 'ADDRESS'
 ] + list(reserved.values())
 
 t_PLUS = r'\+'
@@ -44,6 +46,17 @@ t_RBRACKET = r'\]'
 t_SEMI = r';'
 t_COMMA = r','
 t_MOD = r'\%'
+t_ADDRESS = r'&'
+t_ignore = ' \t'
+
+def t_INCLUDE(t):
+    r'\#include\s*<\w+(\.\w+)*\s*>|\#\s*include\s*\"\w+(\.\w+)*\s*\"'
+    return t
+
+def t_STRING(t):
+    r'\"([^\\\"]|\\.)*\"'
+    t.value = t.value[1:-1]  # Remove as aspas
+    return t
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -63,8 +76,6 @@ def t_BLOCK_COMMENT(t):
     r'/\*(.|\n)*?\*/'
     t.lexer.lineno += t.value.count('\n')
     pass
-
-t_ignore = ' \t'
 
 def t_newline(t):
     r'\n+'
