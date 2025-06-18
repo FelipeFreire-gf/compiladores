@@ -3,6 +3,15 @@ from lexer import lexer
 from parser import parser
 from interpreter import Interpreter
 
+# Main
+# 1. Lê o código-fonte (.c) de um arquivo passado como argumento
+# 2. Envia o código para o lexer gerar tokens
+# 3. Envia os tokens para o parser gerar a árvore sintática (AST)
+# 4. Envia a AST para o interpretador executar o programa
+# 5. Exibe a AST formatada, os tokens, o valor de retorno e o estado final da memória
+
+
+
 def format_ast(node, indent=0):
     """Formata a AST para exibição hierárquica com indentação visual"""
     indent_str = "  " * indent

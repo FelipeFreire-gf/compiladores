@@ -1,3 +1,11 @@
+
+# Interpreter
+# 1. Executa o programa representado pela árvore sintática (AST) gerada pelo parser
+# 2. Interpreta cada comando: variáveis, expressões, funções, if, while, ponteiros, etc.
+# 3. Simula escopos (variáveis locais e globais), arrays e ponteiros
+# 4. Controla a memória (endereços simulados) e o valor de retorno das funções
+# 5. É chamado pelo main.py depois que o parser gera a AST
+
 class Interpreter:
     def __init__(self):
         self.env_stack = [{}]

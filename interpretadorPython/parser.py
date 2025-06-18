@@ -1,6 +1,11 @@
 import ply.yacc as yacc
 from lexer import tokens # Importa os tokens definidos no lexer
 
+# Parser
+# 1. Cria o analisador sintático da linguagem
+# 2. Recebe os tokens do lexer e monta uma árvore sintática (AST)
+# 3. Verifica se a estrutura do código está correta (sintaxe)
+# 4. Gera erros se houver problemas de sintaxe
 
 # Define a precedência dos operadores 
 # Diz quem vem antes em expressões

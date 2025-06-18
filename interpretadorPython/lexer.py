@@ -1,5 +1,12 @@
 import ply.lex as lex
 
+# Lexer
+# 1. Cria o analisador léxico da linguagem
+# 2. Lê o código-fonte e transforma em tokens
+# 3. Cada token representa uma palavra-chave, operador, número, etc.
+# 4. Ignora espaços, tabulações e comentários
+# 5. Os tokens gerados são enviados ao parser pelo main.py
+
 # Palavras chave (reservadas da linguagem) 
 # É tipo uns tokens especiais
 reserved = {
