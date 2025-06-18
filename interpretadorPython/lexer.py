@@ -13,6 +13,7 @@ reserved = {
     'input': 'INPUT'
 }
 
+# Diz quais tokens existem
 tokens = [
     'ID', 'NUMBER', 'STRING', 'INCLUDE',
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
@@ -23,6 +24,7 @@ tokens = [
     'SEMI', 'COMMA', 'MOD', 'ADDRESS'
 ] + list(reserved.values())
 
+# Expressoes regulares simples, diz como reconhecer os tokens
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
@@ -49,6 +51,8 @@ t_MOD = r'\%'
 t_ADDRESS = r'&'
 t_ignore = ' \t'
 
+
+# Expressoes regulares mais complexas, dizem como reconhecer os tokens
 def t_INCLUDE(t):
     r'\#include\s*<\w+(\.\w+)*\s*>|\#\s*include\s*\"\w+(\.\w+)*\s*\"'
     return t
