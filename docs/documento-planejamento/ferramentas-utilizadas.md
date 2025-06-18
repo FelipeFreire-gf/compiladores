@@ -65,6 +65,11 @@ Nesta seção, apresentamos as ferramentas utilizadas pela equipe na etapa de pl
       <td>VS Code</td>
       <td>Editor de código e Markdown utilizado para o desenvolvimento. <a id="anchor_12" href="#FRM12">¹²</a></td>
     </tr>
+    <tr>
+      <td><img src="../assets/deepseek.png" width="80" height="80"/></td>
+      <td>DeepSeek</td>
+      <td>Assistente de IA utilizado para esclarecimento de dúvidas técnicas, auxílio na compreensão e geração de trechos de algoritmos, apoio na documentação e execução de trabalhos manuais.<a id="anchor_13" href="#FRM13">¹³</a></td>
+    </tr>
   </tbody>
 </table>
 
@@ -99,6 +104,8 @@ Nesta seção, apresentamos as ferramentas utilizadas pela equipe na etapa de pl
 
 ¹² MICROSOFT. *Visual Studio Code*. 2025. Disponível em: <https://code.visualstudio.com/>. Acesso em: 10 abr. 2025.
 
+¹³ DEEPSEEK. DeepSeek Chat. 2024. Disponível em: https://www.deepseek.com. Acesso em: 10 abr. 2025.
+
 
 ---
 # Tabela de Versionamento 
@@ -106,3 +113,5 @@ Nesta seção, apresentamos as ferramentas utilizadas pela equipe na etapa de pl
 | Versão | Data       | Descrição                           | Autor(es) | Revisor(es) |
 |--------|------------|-------------------------------------|-----------|-------------|
 | 1.0    | 11/04/2025 | Criação do tópico de ferramentas utilizadas      | [Felipe das Neves](https://github.com/FelipeFreire-gf) | [Lucas Soares](https://github.com/lucaaassb) |
+| 2.0    | 18/06/2025 | Criação do tópico de ferramentas utilizadas refinado     | [Othavio Bolzan](https://github.com/bolzanMGB) | [Kaleb Macedo](https://github.com/kalebmacedo)|
+
