@@ -28,7 +28,7 @@ pip install -r requirements.txt
 ### Para executar, faça:
 
 ```bash
-python main.py testes2.c
+python main.py testes.c
 
 ```
 
@@ -51,19 +51,16 @@ Obs.: vc pode colocar o código utilizado para teste da equipe, localizado na pa
 
 ### 🔁 Fluxo de Execução
 
-```mermaid
-flowchart TDEsta alteração no diagrama:
--   Inicia com o "Código-fonte (.c)".
--   Mostra explicitamente o `main.py` como o primeiro receptor e orquestrador (🖥️).
--   Em seguida, detalha o fluxo através dos componentes `lexer.py` (🧪), `parser.py` (🧠), e `interpreter.py` (⚙️), usando os mesmos ícones e nomenclaturas da sua tabela de componentes.
--   Conclui com o "Resultado Final" (📤).
+    Inicia com o "Código-fonte (.c)".
+    Mostra explicitamente o `main.py` como o primeiro receptor e orquestrador (🖥️).
+    Em seguida, detalha o fluxo através dos componentes `lexer.py` (🧪), `parser.py` (🧠), e `interpreter.py` (⚙️), usando os mesmos ícones e nomenclaturas da sua tabela de componentes.
+    Conclui com o "Resultado Final" (📤).
 
     Input[📄 Código-fonte (.c)] --> Main[🖥️ main.py]
     Main --> Lexer[🧪 lexer.py<br/>(Análise Léxica/Tokenização)]
     Lexer --> Parser[🧠 parser.py<br/>(Análise Sintática/Geração de AST)]
     Parser --> Interpreter[⚙️ interpreter.py<br/>(Interpretação/Execução da AST)]
     Interpreter --> Output[📤 Resultado Final]
-```
 
 ## 📂 Exemplo Completo
 
