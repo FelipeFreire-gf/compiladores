@@ -8,7 +8,7 @@ Nesse primeiro momento implementamos toda a tabela de simbolos e palavras reserv
 
 ## 📌 Visão Geral
 
-- **Linguagem de entrada**: Subconjunto de C (inteiros, `if`, `while`, `return`)
+- **Linguagem de entrada**: Subconjunto de C (inteiros, `if`, `return`)
 - **Tecnologias**: Python + PLY
 - **Etapas**: Análise léxica → Sintática (AST) → Interpretação
 - **Objetivo**: Didático — compreender como funciona um compilador simples
