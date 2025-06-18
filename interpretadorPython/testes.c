@@ -1,7 +1,11 @@
+int eh_par(int num) {
+    if (num % 2 == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 int main() {
-    int x[3];
-    x[0] = 1;
-    x[1] = 2;
-    x[2] = x[0] + x[1];
-    return x[2];
+    return eh_par(10) + eh_par(7);
 }

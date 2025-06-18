@@ -180,7 +180,7 @@ class TestInterpreter(unittest.TestCase):
     def test_15_user_testes_c(self): 
         file_path = os.path.join(PROJECT_DIR, "testes.c")
         result = self._load_and_run_test_file(file_path)
-        self.assertEqual(result["return_value"], 1, "Valor de retorno incorreto para testes.c")
+        self.assertEqual(result["return_value"], 3, "Valor de retorno incorreto para testes.c")
         self.assertEqual(result["globals"], {}, "Variáveis globais deveriam estar vazias para testes.c")
 
 if __name__ == '__main__':

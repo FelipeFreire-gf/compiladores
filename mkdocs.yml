@@ -41,6 +41,8 @@ nav:
 
   - Entregas:
     - Entrega 1: "entregas/entregas1.md" 
+    - Entrega 2: "entregas/entregas2.md" 
+    - Entrega 3: "entregas/entregas3.md" 
   
 
 theme:

@@ -1,8 +1,6 @@
 # Interpretador de C em Python
 
-Este projeto implementa um interpretador simplificado para um subconjunto da linguagem C, utilizando Python e a biblioteca [PLY (Python Lex-Yacc)](http://www.dabeaz.com/ply/).
-
-Nesse primeiro momento implementamos toda a tabela de simbolos e palavras reservadas do C, além de já implementar os condicionais if e else. Começamo o while, contudo temos que refinar melhor esse laço.
+Nesta Etapa focamos na resolução dos problemas da entrega 1.
 
 ---
 
@@ -10,8 +8,6 @@ Nesse primeiro momento implementamos toda a tabela de simbolos e palavras reserv
 
 - **Linguagem de entrada**: Subconjunto de C (inteiros, `if`, `else`, `while`, `for`, `return`)
 - **Tecnologias**: Python + PLY
-- **Etapas**: Análise léxica → Sintática (AST) → Interpretação
-- **Objetivo**: Didático — compreender como funciona um compilador simples
 
 ---
 
@@ -36,6 +32,8 @@ python main.py testes2.c
 
 ```
 
+Obs.: vc pode colocar o código utilizado para teste da equipe, localizado na pasta Testes dentro de interpretadorPython.
+
 ## 🧱 Arquitetura do Projeto
 
 ### 📦 Componentes Principais
@@ -46,23 +44,30 @@ python main.py testes2.c
 | `parser.py`      | 🧠 Análise sintática — constrói a AST (Árvore Sintática Abstrata) |
 | `interpreter.py` | ⚙️ Interpretador — executa a AST em tempo de execução    |
 | `main.py`        | 🖥️ Orquestrador — coordena lexer, parser e interpretação |
-| `testes2.c`       | 🧾 Arquivo de exemplo com código C testável              |
+| `testes.c`       | 🧾 Arquivo de exemplo com código C testável (na pasta `interpretadorPython`) |
+| `Testes/`        | 📂 Diretório contendo arquivos `.c` para testes específicos (na pasta `interpretadorPython`) |
 
 ---
 
 ### 🔁 Fluxo de Execução
 
 ```mermaid
-flowchart TD
-    A[📄 Código-fonte (.c)] --> B[🔍 Lexer<br/>(Tokenização)]
-    B --> C[🧩 Parser<br/>(Geração de AST)]
-    C --> D[🧮 Interpretador<br/>(Execução da AST)]
-    D --> E[📤 Resultado Final]
+flowchart TDEsta alteração no diagrama:
+-   Inicia com o "Código-fonte (.c)".
+-   Mostra explicitamente o `main.py` como o primeiro receptor e orquestrador (🖥️).
+-   Em seguida, detalha o fluxo através dos componentes `lexer.py` (🧪), `parser.py` (🧠), e `interpreter.py` (⚙️), usando os mesmos ícones e nomenclaturas da sua tabela de componentes.
+-   Conclui com o "Resultado Final" (📤).
+
+    Input[📄 Código-fonte (.c)] --> Main[🖥️ main.py]
+    Main --> Lexer[🧪 lexer.py<br/>(Análise Léxica/Tokenização)]
+    Lexer --> Parser[🧠 parser.py<br/>(Análise Sintática/Geração de AST)]
+    Parser --> Interpreter[⚙️ interpreter.py<br/>(Interpretação/Execução da AST)]
+    Interpreter --> Output[📤 Resultado Final]
 ```
 
 ## 📂 Exemplo Completo
 
-No arquivo de testes_arrays.c
+No arquivo de testes.c com o código de teste de array:
   
 ```bash
 int main() {
