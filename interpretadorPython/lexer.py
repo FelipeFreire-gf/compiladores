@@ -1,6 +1,7 @@
 import ply.lex as lex
 
-# Palavras chave (reservadas da linguagem) — serão reconhecidas como tokens especiais
+# Palavras chave (reservadas da linguagem) 
+# É tipo uns tokens especiais
 reserved = {
     'int': 'INT',
     'void': 'VOID',
@@ -14,18 +15,20 @@ reserved = {
     'input': 'INPUT'
 }
 
-# Lista completa de tokens que o analisador léxico vai reconhecer
+# Lista de todos os tokens que o analisador léxico pode reconhecer
 tokens = [
     'ID', 'NUMBER', 'STRING', 'INCLUDE',      # identificadores, números, strings e includes
-    'PLUS', 'MINUS', 'TIMES', 'DIVIDE',       # operadores aritméticos
-    'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',       # operadores relacionais
-    'ASSIGN', 'AND', 'OR', 'NOT',             # operadores lógicos e de atribuição
-    'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',   # parênteses e chaves
-    'LBRACKET', 'RBRACKET',                   # colchetes
+    'PLUS', 'MINUS', 'TIMES', 'DIVIDE',       # operadores aritméticos (+ - * /)
+    'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',       # operadores relacionais (< <= > >= == !=)
+    'ASSIGN', 'AND', 'OR', 'NOT',             # operadores lógicos e de atribuição (= && || !)
+    'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',   # parênteses e chaves (( ) { })
+    'LBRACKET', 'RBRACKET',                   # colchetes ([ ])
     'SEMI', 'COMMA', 'MOD', 'ADDRESS'         # ponto e vírgula, vírgula, módulo, e operador de endereço
-] + list(reserved.values())  # inclui os tokens das palavras reservadas
+] + list(reserved.values())  # incluir os tokens das palavras reservadas acima
 
-# Expressões regulares simples — associam símbolos do código a seus respectivos tokens
+# Expressões regulares simples 
+# Associam símbolos do código a seus respectivos tokens
+# Diz como reconhecer cada token
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
@@ -52,6 +55,7 @@ t_MOD = r'\%'
 t_ADDRESS = r'&'
 t_ignore = ' \t'  # Ignora espaços em branco e tabulações
 
+# Aqui são expressões mais complexas que precisam de funções
 # Expressão para detectar diretivas de include (ex: #include <stdio.h>)
 def t_INCLUDE(t):
     r'\#include\s*<\w+(\.\w+)*\s*>|\#\s*include\s*\"\w+(\.\w+)*\s*\"'
@@ -63,7 +67,7 @@ def t_STRING(t):
     t.value = t.value[1:-1]  # Remove as aspas da string
     return t
 
-# Expressão para identificadores (ex: nomes de variáveis ou funções)
+# Expressão para identificadores (ex: nomes de variáveis ou funções criadas pelo programador)
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value, 'ID')  # Verifica se é palavra reservada
