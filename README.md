@@ -14,7 +14,7 @@ Utilizamos o repositório para compor nosso projeto final bem como as atividades
 
 Este projeto implementa um interpretador para um subconjunto da linguagem C, com os seguintes recursos:
 
-- **Linguagem de entrada**: Código C com suporte a `int`, `if`, `else`, `while` , `comparacoes` , `operadores aritmeticos` , `operadores logicos ` , `print` , `atribuição` , `declaração de variaveis` , `array` , `return`, expressões aritméticas e booleanas.
+- **Linguagem de entrada**: Código C com suporte a `int`, `if`, `else`, `while` , `comparacoes` , `operadores aritmeticos` , `operadores logicos ` , `print` , `atribuição` , `declaração de variaveis` , `array` , `return`.
 - **Backend**: Python 3 com a biblioteca [PLY (Python Lex-Yacc)](http://www.dabeaz.com/ply/).
 - **Pipeline completo**: Análise léxica, análise sintática (AST) e interpretação.
 - **Objetivo**: Compreensão prática de compiladores e linguagens formais.
