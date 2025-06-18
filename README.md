@@ -38,6 +38,12 @@ pip install -r requirements.txt
 ```bash
 python main.py testes.c
 ```
+### Para Rodar nossa suíte de testes
+
+```bash
+python -m unittest test_interpreter.py
+```
+Obs.: Pode haver a quebra de algum teste casa o return não esteja de acordo com a saída planejada, nesse caso deve-se ajustar a saída do teste
 
 <!--
 
