@@ -1,13 +1,23 @@
 import ply.yacc as yacc
 from lexer import tokens
 
+# Faz a precedencia
+# Qual item deve fazer primeiro
+# Cada linha tem nivel mais forte que a anterior
 precedence = (
-    ('right', 'NOT', 'ADDRESS'),
-    ('left', 'AND', 'OR'),
-    ('left', 'LT', 'LE', 'GT', 'GE', 'EQ', 'NE'),
-    ('left', 'PLUS', 'MINUS'),
-    ('left', 'TIMES', 'DIVIDE', 'MOD'),
+    ('right', 'NOT', 'ADDRESS'), # !a &a
+    ('left', 'AND', 'OR'), # a && b || c  → ((a && b) || c
+    ('left', 'LT', 'LE', 'GT', 'GE', 'EQ', 'NE'), # a - b + c → ((a - b) + c)
+    ('left', 'PLUS', 'MINUS'), # a - b + c → ((a - b) + c)
+    ('left', 'TIMES', 'DIVIDE', 'MOD'),# a + b * c → a + (b * c)
 )
+
+# Aqui serao as regras gramaticasi de linguagem
+# def p_nome_da_regra(p):
+#    '''regra : alternativa1
+#             | alternativa2'''
+#    # ação semântica
+#    p[0] = ...
 
 def p_program(p):
     '''program : element_list'''
