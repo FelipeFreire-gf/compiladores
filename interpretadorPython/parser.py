@@ -338,9 +338,12 @@ def p_id(p):
 # Caso de erro de sintaxe
 def p_error(p):
     if p:
-        print(f"Erro de sintaxe em '{p.value}' na linha {p.lineno}")
+        # Mensagem mais detalhada, sugerindo o que pode estar errado
+        print(f"Erro de Sintaxe na linha {p.lineno}: Token inesperado '{p.value}' do tipo {p.type}.")
+        print("  -> Verifique a instrução anterior em busca de ponto e vírgula ';' ausente ou sintaxe incorreta.")
     else:
-        print("Erro de sintaxe no final do arquivo")
+        # Sugere causas comuns para um final de arquivo inesperado
+        print("Erro de Sintaxe: Fim inesperado do arquivo. Verifique se todas as chaves '{' e parênteses '(' foram fechados corretamente.")
 
 # Cria o parser
 parser = yacc.yacc()

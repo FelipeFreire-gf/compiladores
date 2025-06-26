@@ -104,7 +104,8 @@ def t_newline(t):
 
 # Função de tratamento de erro — quando um caractere inválido aparece
 def t_error(t):
-    print(f"Caractere ilegal '{t.value[0]}'")
+    # Adiciona o número da linha para facilitar a depuração
+    print(f"Erro Léxico na linha {t.lexer.lineno}: Caractere não reconhecido '{t.value[0]}'")
     t.lexer.skip(1)  # Pula o caractere inválido e continua
 
 # Criação do analisador léxico (lexer) com base nas definições acima
