@@ -4,14 +4,14 @@ Nesta Etapa focamos na resolução dos problemas da entrega 1.
 
 ---
 
-## 📌 Visão Geral
+## Visão Geral
 
 - **Linguagem de entrada**: Subconjunto de C (inteiros, `if`, `else`, `while`, `for`, `return`)
 - **Tecnologias**: Python + PLY
 
 ---
 
-## ⚙️ Instalação
+## Instalação
 
 ### Pré-requisitos
 
@@ -34,9 +34,9 @@ python main.py testes.c
 
 Obs.: vc pode colocar o código utilizado para teste da equipe, localizado na pasta Testes dentro de interpretadorPython.
 
-## 🧱 Arquitetura do Projeto
+## Arquitetura do Projeto
 
-### 📦 Componentes Principais
+### Componentes Principais
 
 | Arquivo          | Responsabilidade                                        |
 |------------------|----------------------------------------------------------|
@@ -49,7 +49,7 @@ Obs.: vc pode colocar o código utilizado para teste da equipe, localizado na pa
 
 ---
 
-### 🔁 Fluxo de Execução
+### Fluxo de Execução
 
     Inicia com o "Código-fonte (.c)".
     Mostra explicitamente o `main.py` como o primeiro receptor e orquestrador (🖥️).
@@ -62,7 +62,7 @@ Obs.: vc pode colocar o código utilizado para teste da equipe, localizado na pa
     Parser --> Interpreter[⚙️ interpreter.py<br/>(Interpretação/Execução da AST)]
     Interpreter --> Output[📤 Resultado Final]
 
-## 📂 Exemplo Completo
+## Exemplo Completo
 
 No arquivo de testes.c com o código de teste de array:
   

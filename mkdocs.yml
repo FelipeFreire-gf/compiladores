@@ -39,11 +39,17 @@ nav:
       - Projeto Aula 9: "documento-aula/documento-aula9.md"
       - Projeto Aula 10: "documento-aula/documento-aula10.md"  
 
+  - Tecnologias do Interpretador:
+    - Tecnologias: "interpretador/doc-interpretador.md"
+
+  - Testes:
+    - Testes: "documento-testes/testes.md"
+
   - Entregas:
     - Entrega 1: "entregas/entregas1.md" 
     - Entrega 2: "entregas/entregas2.md" 
     - Entrega 3: "entregas/entregas3.md" 
-  
+    - Entrega 3.1: "entregas/entregas3.1.md" 
 
 theme:
   logo: assets/logoSemFundo.ico
