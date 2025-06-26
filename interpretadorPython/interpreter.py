@@ -1,4 +1,3 @@
-
 # Interpreter
 # 1. Executa o programa representado pela árvore sintática (AST) gerada pelo parser
 # 2. Interpreta cada comando: variáveis, expressões, funções, if, while, ponteiros, etc.
@@ -34,7 +33,8 @@ class Interpreter:
 
     def interpret(self, ast):
         if ast is None:
-            print("Erro: AST não foi gerada corretamente")
+            # Mensagem melhorada: Informa que o erro vem do parser.
+            print("Erro Crítico: A Árvore Sintática (AST) não foi gerada. Verifique os erros de sintaxe reportados pelo parser.")
             return None
             
         if ast[0] == 'program':
@@ -49,7 +49,8 @@ class Interpreter:
             if 'main' in self.functions:
                 return self.interpret_function(self.functions['main'])
             else:
-                print("Erro: função 'main' não encontrada")
+                # Mensagem melhorada
+                print("Erro de Execução: A função 'main' não foi encontrada. Todo programa deve ter um ponto de entrada main().")
                 return None
         return None
 
@@ -75,10 +76,11 @@ class Interpreter:
                 break
                 
         result = self.return_value
-        print("Variáveis locais:", self.env)
+        # Removendo prints de depuração intermediários para focar nas saídas de erro
+        # print("Variáveis locais:", self.env) 
         self.pop_env()
         self.current_function = previous_function
-        print("\nVariáveis locais da função", node[2] + ":", self.env)
+        # print("\nVariáveis locais da função", node[2] + ":", self.env)
         return result
 
     def eval(self, node):
@@ -138,11 +140,14 @@ class Interpreter:
                         if target_var in env:
                             env[target_var] = value
                             return
-                    print(f"Erro: variável '{target_var}' não encontrada")
+                    # Mensagem melhorada
+                    print(f"Erro em Tempo de Execução na função '{self.current_function}': A variável alvo '{target_var}' do ponteiro '{ptr_name}' não foi encontrada.")
                 else:
-                    print(f"Erro: '{ptr_name}' não é um ponteiro válido")
+                    # Mensagem melhorada
+                    print(f"Erro de Atribuição na função '{self.current_function}': A variável '{ptr_name}' não aponta para um endereço de memória válido. Verifique se foi inicializada com '&'.")
             else:
-                print(f"Erro: ponteiro '{ptr_name}' não declarado")
+                # Mensagem melhorada
+                print(f"Erro em Tempo de Execução na função '{self.current_function}': O ponteiro '{ptr_name}' não foi declarado.")
         
         elif node_type == 'pointer_op':
             op, expr = node[1], node[2]
@@ -154,7 +159,8 @@ class Interpreter:
                         addr = self.alloc_address()
                         self.pointers[addr] = ('var', var_name)
                         return addr
-                print(f"Erro: variável '{var_name}' não encontrada")
+                # Mensagem melhorada
+                print(f"Erro em Tempo de Execução na função '{self.current_function}': A variável '{var_name}' não foi encontrada para a operação de endereço '&'.")
                 return 0
                 
             elif op == '*':
@@ -165,7 +171,8 @@ class Interpreter:
                         if target_var in env:
                             return env[target_var]
                     return 0
-                print(f"Erro: ponteiro inválido")
+                # Mensagem melhorada
+                print(f"Erro em Tempo de Execução na função '{self.current_function}': Tentativa de desreferenciar um ponteiro nulo ou inválido ('{expr[1]}').")
                 return 0
             
         elif node_type == 'declaration':
@@ -184,7 +191,8 @@ class Interpreter:
             type_, name, size, values = node[1], node[2], node[3], node[4]
             self.arrays[name] = [self.eval(val) for val in values]
             if len(self.arrays[name]) != size:
-                print(f"Aviso: Tamanho do array '{name}' não corresponde à inicialização")
+                # Mensagem melhorada
+                print(f"Aviso na declaração do array '{name}': O tamanho declarado é {size}, mas foram fornecidos {len(self.arrays[name])} valores de inicialização.")
             self.env[name] = {'type': 'array', 'size': size}
             
         elif node_type == 'assignment':
@@ -195,17 +203,20 @@ class Interpreter:
                 if var_name in env:
                     env[var_name] = value
                     return
-            # Se não encontrou, cria no escopo atual
+            # Mensagem melhorada: Informa sobre criação de variável implícita
+            print(f"Aviso na função '{self.current_function}': Variável '{var_name}' não declarada foi encontrada. Criando no escopo atual. Considere declará-la explicitamente.")
             self.env[var_name] = value
             
         elif node_type == 'array_assignment':
             array_name, index_expr, value_expr = node[1], node[2], node[3]
             if array_name not in self.arrays:
-                print(f"Erro: Array '{array_name}' não declarado")
+                # Mensagem melhorada
+                print(f"Erro em Tempo de Execução na função '{self.current_function}': Tentativa de atribuição a um array não declarado '{array_name}'.")
                 return
             index = self.eval(index_expr)
             if not isinstance(index, int) or index < 0 or index >= len(self.arrays[array_name]):
-                print(f"Erro: Índice {index} inválido para array '{array_name}'")
+                # Mensagem melhorada
+                print(f"Erro de Acesso ao Array na função '{self.current_function}': O índice {index} está fora dos limites para o array '{array_name}' de tamanho {len(self.arrays[array_name])}. Índices válidos: 0 a {len(self.arrays[array_name]) - 1}.")
                 return
             self.arrays[array_name][index] = self.eval(value_expr)
             
@@ -248,7 +259,8 @@ class Interpreter:
                 args = [self.eval(arg) for arg in node[2]]
                 
                 if len(args) != len(func[3]):
-                    print(f"Erro: número incorreto de argumentos para {func_name}")
+                    # Mensagem melhorada
+                    print(f"Erro na chamada da função '{func_name}': esperava {len(func[3])} argumentos, mas recebeu {len(args)}.")
                     return None
                     
                 self.push_env()
@@ -273,7 +285,8 @@ class Interpreter:
                 self.return_value = None
                 return result
             else:
-                print(f"Erro: função '{func_name}' não definida")
+                # Mensagem melhorada
+                print(f"Erro em Tempo de Execução na função '{self.current_function}': Tentativa de chamar uma função não definida '{func_name}'.")
                 return None
             
         elif isinstance(node, list):
@@ -328,16 +341,20 @@ class Interpreter:
             for env in reversed(self.env_stack):
                 if var_name in env:
                     return env[var_name]
+            # Mensagem melhorada
+            print(f"Aviso na função '{self.current_function}': Variável '{var_name}' não foi encontrada, retornando valor padrão 0.")
             return 0
             
         elif node_type == 'array_access':
             array_name, index_expr = node[1], node[2]
             if array_name not in self.arrays:
-                print(f"Erro: Array '{array_name}' não declarado")
+                # Mensagem melhorada
+                print(f"Erro em Tempo de Execução na função '{self.current_function}': Tentativa de acessar um array não declarado '{array_name}'.")
                 return 0
             index = self.eval(index_expr)
             if not isinstance(index, int) or index < 0 or index >= len(self.arrays[array_name]):
-                print(f"Erro: Índice {index} inválido para array '{array_name}'")
+                # Mensagem melhorada
+                print(f"Erro de Acesso ao Array na função '{self.current_function}': O índice {index} está fora dos limites para o array '{array_name}' de tamanho {len(self.arrays[array_name])}. Índices válidos: 0 a {len(self.arrays[array_name]) - 1}.")
                 return 0
             return self.arrays[array_name][index]
 
