@@ -6,7 +6,7 @@ Nesse primeiro momento implementamos toda a tabela de simbolos e palavras reserv
 
 ---
 
-## 📌 Visão Geral
+## Visão Geral
 
 - **Linguagem de entrada**: Subconjunto de C (inteiros, `if`, `return`)
 - **Tecnologias**: Python + PLY
@@ -15,7 +15,7 @@ Nesse primeiro momento implementamos toda a tabela de simbolos e palavras reserv
 
 ---
 
-## ⚙️ Instalação
+## Instalação
 
 ### Pré-requisitos
 
@@ -36,9 +36,9 @@ python main.py testes.c
 
 ```
 
-## 🧱 Arquitetura do Projeto
+## Arquitetura do Projeto
 
-### 📦 Componentes Principais
+### Componentes Principais
 
 | Arquivo          | Responsabilidade                                        |
 |------------------|----------------------------------------------------------|
@@ -50,7 +50,7 @@ python main.py testes.c
 
 ---
 
-### 🔁 Fluxo de Execução
+### Fluxo de Execução
 
 ```mermaid
 flowchart TD
@@ -60,7 +60,7 @@ flowchart TD
     D --> E[📤 Resultado Final]
 ```
 
-## 📂 Exemplo Completo
+## Exemplo Completo
 
 No arquivo de testes.c
   

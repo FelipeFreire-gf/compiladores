@@ -4,13 +4,13 @@ Nesta etapa, o foco foi a criação de uma suíte de testes automatizados para g
 
 ---
 
-## 📌 Visão Geral
+## Visão Geral
 
 - **Tecnologias**: unittest
 
 ---
 
-## ⚙️ Instalação
+## Instalação
 
 ### Pré-requisitos
 
